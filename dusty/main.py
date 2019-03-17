@@ -24,8 +24,8 @@ import argparse
 import importlib
 from logging import DEBUG, INFO
 
-import carrier.commands
-from carrier.tools import log
+import dusty.commands
+from dusty.tools import log
 
 
 def main():
@@ -51,10 +51,10 @@ def main():
     subparsers.required = True
     # Load commands
     commands = dict()
-    for _, name, pkg in pkgutil.iter_modules(carrier.commands.__path__):
+    for _, name, pkg in pkgutil.iter_modules(dusty.commands.__path__):
         if pkg:
             continue
-        module = importlib.import_module("carrier.commands.{}".format(name))
+        module = importlib.import_module("dusty.commands.{}".format(name))
         argparser = subparsers.add_parser(
             module.Command.get_name(),
             help=module.Command.get_help(),
@@ -65,7 +65,7 @@ def main():
     args = parser.parse_args()
     # Setup logging
     log.init(args.log_level)
-    log.info("Carrier is starting")
+    log.info("Dusty is starting")
     log.debug("Loaded commands: {}".format(", ".join(list(commands.keys()))))
     # Run selected command
     commands[args.command].execute(args)

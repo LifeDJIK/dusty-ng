@@ -1,2 +1,3 @@
 setuptools
 ruamel.yaml
+git+https://github.com/reportportal/client-Python.git

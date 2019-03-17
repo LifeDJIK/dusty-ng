@@ -16,20 +16,9 @@
 #   limitations under the License.
 
 """
-    Legacy entry point
+    Constants
 """
 
-import os
-import sys
 
-import carrier.main
-
-
-def main():
-    """ Adjust parameters and run main entry """
-    sys.argv.insert(1, "run")
-    sys.argv.insert(1, "--call-from-legacy")
-    if os.environ.get("debug", False):
-        sys.argv.insert(1, "--debug")
-    print(sys.argv)
-    carrier.main.main()
+DEFAULT_CONFIG_PATH = "/tmp/scan-config.yaml"
+DEFAULT_CONFIG_ENV_KEY = "DUSTY_SCAN_CONFIG"

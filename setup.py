@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 # coding=utf-8
-# pylint: disable=I0011,C0103
+# pylint: disable=I0011,C0103,C0301
 
 #   Copyright 2019 getcarrier.io
 #
@@ -17,7 +17,7 @@
 #   limitations under the License.
 
 """
-    Carrier setup script
+    Dusty setup script
 """
 
 import pkgutil
@@ -34,8 +34,8 @@ with open("requirements.txt") as f:
     required_dependencies = f.read().splitlines()
 
 
-console_scripts = ["carrier = carrier.main:main"]
-legacy_scripts = "carrier.commands.legacy"
+console_scripts = ["dusty = dusty.main:main"]
+legacy_scripts = "dusty.commands.legacy"
 legacy_scripts_path = importlib.import_module(legacy_scripts).__path__
 for _, name, _ in pkgutil.iter_modules(legacy_scripts_path):
     console_scripts.append("{name} = {module}.{name}:main".format(
@@ -44,13 +44,13 @@ for _, name, _ in pkgutil.iter_modules(legacy_scripts_path):
 
 
 setup(
-    name="carrier",
-    version="0.0.1",
+    name="dusty",
+    version="1.0.0",
     license="Apache License 2.0",
     author="Carrier team",
     author_email="artem_rozumenko@epam.com",
-    url="https://github.com/carrier-io",
-    description="Carrier | Continuous test execution platform",
+    url="https://github.com/carrier-io/dusty",
+    description="Framework to execute various security tools and convert output to common unified format",
     long_description=long_description,
     packages=find_packages(),
     include_package_data=True,

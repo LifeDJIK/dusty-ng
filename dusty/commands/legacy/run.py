@@ -16,10 +16,20 @@
 #   limitations under the License.
 
 """
-    Entry point for 'python -m carrier'
+    Legacy entry point
 """
 
+import os
 import sys
-from carrier.main import main
 
-sys.exit(main())
+import dusty.main
+
+
+def main():
+    """ Adjust parameters and run main entry """
+    sys.argv.insert(1, "run")
+    sys.argv.insert(1, "--call-from-legacy")
+    if os.environ.get("debug", False):
+        sys.argv.insert(1, "--debug")
+    print(sys.argv)
+    dusty.main.main()

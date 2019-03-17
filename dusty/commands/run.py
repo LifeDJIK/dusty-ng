@@ -19,9 +19,9 @@
     Command: run
 """
 
-from carrier.tools import log
-from carrier.data import constants
-from carrier.models.command import CommandModel
+from dusty.tools import log
+from dusty.data import constants
+from dusty.models.command import CommandModel
 
 
 class Command(CommandModel):

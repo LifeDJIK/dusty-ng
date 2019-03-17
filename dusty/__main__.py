@@ -16,9 +16,10 @@
 #   limitations under the License.
 
 """
-    Constants
+    Entry point for 'python3 -m dusty'
 """
 
+import sys
+from dusty.main import main
 
-DEFAULT_CONFIG_PATH = "/tmp/scan-config.yaml"
-DEFAULT_CONFIG_ENV_KEY = "CARRIER_SCAN_CONFIG"
+sys.exit(main())

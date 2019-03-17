@@ -1,4 +1,4 @@
-# Carrier configuration
+# Dusty configuration
 config_version: 2
 suites: # Test suites
   test: # Suite name
