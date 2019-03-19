@@ -1,7 +1,8 @@
 include LICENSE
-include MANIFEST.in
-include HACKING.md
 include README.md
+include HACKING.md
+include MANIFEST.in
 include setup.py
+include requirements.txt
 
-graft dusty/data
+graft dusty
