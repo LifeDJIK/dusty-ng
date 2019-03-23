@@ -16,11 +16,17 @@
 #   limitations under the License.
 
 """
-    Constants
+    Scanner model
 """
 
 
-LOG_FORMAT = "%(asctime)s - %(levelname)8s - %(name)s - %(message)s"
-LOG_DATE_FORMAT = "%Y.%m.%d %H:%M:%S"
-DEFAULT_CONFIG_PATH = "/tmp/scan-config.yaml"
-DEFAULT_CONFIG_ENV_KEY = "CARRIER_SCAN_CONFIG"
+class ScannerModel:
+    """ Scanner base class """
+
+    def execute(self, config):
+        """ Run the scanner """
+        raise NotImplementedError()
+
+    def results(self):
+        """ Get findings """
+        raise NotImplementedError()

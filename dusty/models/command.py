@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 # coding=utf-8
+# pylint: disable=I0011,R0903
 
 #   Copyright 2019 getcarrier.io
 #
@@ -20,18 +21,8 @@
 """
 
 
-class CommandModel(object):
+class CommandModel:
     """ Command base class """
-
-    @staticmethod
-    def get_name():
-        """ Command name, such as 'run' """
-        raise NotImplementedError()
-
-    @staticmethod
-    def get_help():
-        """ Command help message (description) """
-        raise NotImplementedError()
 
     def execute(self, args):
         """ Run the command """

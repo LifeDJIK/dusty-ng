@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 # coding=utf-8
-# pylint: disable=I0011,C0103,C0301
+# pylint: disable=I0011,C0103,C0301,W0702
 
 #   Copyright 2019 getcarrier.io
 #
@@ -22,17 +22,15 @@
 
 import pkgutil
 import importlib
+import subprocess
 
 from setuptools import setup, find_packages
-
 
 with open("README.md") as f:
     long_description = f.read()
 
-
 with open("requirements.txt") as f:
     required_dependencies = f.read().splitlines()
-
 
 console_scripts = ["dusty = dusty.main:main"]
 legacy_scripts = "dusty.commands.legacy"
@@ -42,10 +40,16 @@ for _, name, _ in pkgutil.iter_modules(legacy_scripts_path):
         module=legacy_scripts, name=name
     ))
 
+version = "1.0.0"
+try:
+    tag = subprocess.check_output(["git", "rev-parse", "--short", "HEAD"])
+    version = f"{version}-{tag.decode('utf-8').strip()}"
+except:
+    pass
 
 setup(
     name="dusty",
-    version="1.0.0",
+    version=version,
     license="Apache License 2.0",
     author="Carrier team",
     author_email="artem_rozumenko@epam.com",

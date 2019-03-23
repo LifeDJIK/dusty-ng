@@ -22,13 +22,15 @@
 import logging
 import inspect
 
+from dusty.data import constants
+
 
 def init(level=logging.INFO):
     """ Initialize logging """
     logging.basicConfig(
         level=level,
-        datefmt='%Y.%m.%d %H:%M:%S',
-        format='%(asctime)s - %(levelname)8s - %(name)s - %(message)s',
+        datefmt=constants.LOG_DATE_FORMAT,
+        format=constants.LOG_FORMAT,
     )
 
 

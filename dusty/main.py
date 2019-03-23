@@ -24,6 +24,7 @@ import argparse
 import importlib
 from logging import DEBUG, INFO
 
+import pkg_resources
 import dusty.commands
 from dusty.tools import log
 
@@ -57,7 +58,7 @@ def main():
         module = importlib.import_module("dusty.commands.{}".format(name))
         argparser = subparsers.add_parser(
             module.Command.get_name(),
-            help=module.Command.get_help(),
+            help=module.Command.get_description(),
             formatter_class=argparse.ArgumentDefaultsHelpFormatter
         )
         commands[module.Command.get_name()] = module.Command(argparser)
@@ -65,7 +66,8 @@ def main():
     args = parser.parse_args()
     # Setup logging
     log.init(args.log_level)
-    log.info("Dusty is starting")
+    # Display welcome message
+    log.info(f"Dusty {pkg_resources.require('dusty')[0].version} is starting")
     log.debug("Loaded commands: {}".format(", ".join(list(commands.keys()))))
     # Run selected command
     commands[args.command].execute(args)

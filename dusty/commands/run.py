@@ -19,12 +19,15 @@
     Command: run
 """
 
+import importlib
+
 from dusty.tools import log
 from dusty.data import constants
+from dusty.models.module import ModuleModel
 from dusty.models.command import CommandModel
 
 
-class Command(CommandModel):
+class Command(ModuleModel, CommandModel):
     """ Runs tests defined in config file """
 
     @staticmethod
@@ -33,30 +36,42 @@ class Command(CommandModel):
         return "run"
 
     @staticmethod
-    def get_help():
+    def get_description():
         """ Command help message (description) """
         return "run tests according to config"
 
     def __init__(self, argparser):
         """ Initialize command instance, add arguments """
         argparser.add_argument(
-            "-e", "--config-variable",
+            "-e", "--config-variable", dest="config_variable",
             help="name of environment variable with config",
             type=str, default=constants.DEFAULT_CONFIG_ENV_KEY
         )
         argparser.add_argument(
-            "-c", "--config-file",
+            "-c", "--config-file", dest="config_file",
             help="path to config file",
             type=str, default=constants.DEFAULT_CONFIG_PATH
         )
         argparser.add_argument(
-            "-s", "--suite",
+            "-s", "--suite", dest="suite",
             help="test suite to run",
             type=str, required=True
         )
 
     def execute(self, args):
         """ Run the command """
-        log.info("Running tests")
         if args.call_from_legacy:
-            log.info("Oh, legacy...")
+            log.warning("Called from legacy")
+        log.info("Running tests")
+        context = {}
+        config = {}
+        reporter = importlib.import_module(
+            f"dusty.reporters.html"
+        ).Reporter(context)
+        reporter.on_start()
+        scanner = importlib.import_module(
+            f"dusty.scanners.dast.{args.suite}"
+        ).Scanner(context)
+        scanner.execute(config)
+        results = scanner.results()
+        reporter.on_finish(results)

@@ -16,35 +16,34 @@
 #   limitations under the License.
 
 """
-    Reporter model
+    Scanner: html
 """
 
+from dusty.tools import log
+from dusty.models.module import ModuleModel
+from dusty.models.reporter import ReporterModel
 
-class ReporterModel:
-    """ Reporter base class """
 
-    # @staticmethod
-    # def depends_on():
-    #     """ Return required depencies """
-    #     raise NotImplementedError()
+class Reporter(ModuleModel, ReporterModel):
+    """ Report results from scanners """
 
-    # @staticmethod
-    # def run_before():
-    #     """ Return optional depencies """
-    #     raise NotImplementedError()
+    @staticmethod
+    def get_name():
+        """ Reporter name """
+        return "html"
+
+    @staticmethod
+    def get_description():
+        """ Reporter description """
+        return "HTML reporter"
+
+    def __init__(self, context):
+        """ Initialize reporter instance """
 
     def on_start(self):
         """ Called when testing starts """
-        raise NotImplementedError()
+        log.info("Testing started")
 
     def on_finish(self, results):
         """ Called when testing ends """
-        raise NotImplementedError()
-
-    # def on_scanner_start(self):
-    #     """ Called when scanner starts """
-    #     raise NotImplementedError()
-
-    # def on_scanner_finish(self):
-    #     """ Called when scanner ends """
-    #     raise NotImplementedError()
+        log.info(f"Testing done, got {len(results)} results")
