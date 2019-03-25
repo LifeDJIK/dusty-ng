@@ -27,6 +27,6 @@ class ScannerModel:
         """ Run the scanner """
         raise NotImplementedError()
 
-    def results(self):
+    def get_results(self):
         """ Get findings """
         raise NotImplementedError()

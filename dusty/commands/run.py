@@ -64,7 +64,11 @@ class Command(ModuleModel, CommandModel):
             log.warning("Called from legacy")
         log.info("Running tests")
         context = {}
-        config = {}
+        config = {
+            "protocol": "http",
+            "host": "127.0.0.1",
+            "port": 80,
+        }
         reporter = importlib.import_module(
             f"dusty.reporters.html"
         ).Reporter(context)
@@ -73,5 +77,5 @@ class Command(ModuleModel, CommandModel):
             f"dusty.scanners.dast.{args.suite}"
         ).Scanner(context)
         scanner.execute(config)
-        results = scanner.results()
+        results = scanner.get_results()
         reporter.on_finish(results)

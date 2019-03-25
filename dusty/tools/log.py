@@ -32,6 +32,9 @@ def init(level=logging.INFO):
         datefmt=constants.LOG_DATE_FORMAT,
         format=constants.LOG_FORMAT,
     )
+    # Disable requests/urllib3 logging
+    logging.getLogger("requests").setLevel(logging.WARNING)
+    logging.getLogger("urllib3").setLevel(logging.WARNING)
 
 
 def get_logger():
@@ -79,5 +82,5 @@ def log(lvl, msg, *args, **kwargs):
 
 
 def exception(msg, *args, **kwargs):
-    """ Logs a message with level ERROR inside excaption handler """
+    """ Logs a message with level ERROR inside exception handler """
     return __get_logger().exception(msg, *args, **kwargs)

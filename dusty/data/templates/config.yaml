@@ -4,16 +4,15 @@ suites: # Test suites
   test: # Suite name
     general: # General config
       dast:
-        hostname: test
-        port: 443
-        proto: https
+        target: https://test/app/
       sast:
         code_path: /code
     scanners: # Scanner config
       dast:
         zap: true
     processing: # Processing config
-      min_level: Major
+      false_positive: /tmp/false_positive.config
+      min_level_filter: Major
     reporters: # Reporter config
       html:
         report_path: /report

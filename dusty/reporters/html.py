@@ -47,3 +47,5 @@ class Reporter(ModuleModel, ReporterModel):
     def on_finish(self, results):
         """ Called when testing ends """
         log.info(f"Testing done, got {len(results)} results")
+        if results:
+            log.debug(results[0])
