@@ -5,6 +5,8 @@ suites: # Test suites
     general: # General config
       dast:
         target: https://test/app/
+        exclude:
+        - https://test/logout.*
       sast:
         code_path: /code
     scanners: # Scanner config
@@ -12,7 +14,7 @@ suites: # Test suites
         zap: true
     processing: # Processing config
       false_positive: /tmp/false_positive.config
-      min_level_filter: Major
+      min_severity_filter: Major
     reporters: # Reporter config
       html:
         report_path: /report
