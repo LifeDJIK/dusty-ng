@@ -24,6 +24,6 @@
 class PerformerModel:
     """ Performer base class """
 
-    def perform(self, context):
+    def perform(self):
         """ Perform action """
         raise NotImplementedError()

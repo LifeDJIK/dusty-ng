@@ -19,13 +19,16 @@
     Command: run
 """
 
-import importlib
+# import importlib
 
 from dusty.tools import log
 from dusty.data import constants
 from dusty.models.module import ModuleModel
 from dusty.models.command import CommandModel
 from dusty.helpers.context import RunContext
+from dusty.scanners.performer import ScanningPerformer
+from dusty.processing.performer import ProcessingPerformer
+from dusty.reporters.performer import ReportingPerformer
 
 
 class Command(ModuleModel, CommandModel):
@@ -75,21 +78,26 @@ class Command(ModuleModel, CommandModel):
         if args.call_from_legacy:
             log.warning("Called from legacy entry point")
         context = RunContext(args)
+        scanning = ScanningPerformer(context)
+        processing = ProcessingPerformer(context)
+        reporting = ReportingPerformer(context)
+        scanning.perform()
+        processing.perform()
+        reporting.perform()
 
-        config = {
-            "protocol": "http",
-            "host": "127.0.0.1",
-            "port": 80,
-        }
+        # config = {
+        #     "protocol": "http",
+        #     "host": "127.0.0.1",
+        #     "port": 80,
+        # }
+        # reporter = importlib.import_module(
+        #     f"dusty.reporters.html"
+        # ).Reporter(context)
 
-        reporter = importlib.import_module(
-            f"dusty.reporters.html"
-        ).Reporter(context)
-
-        reporter.on_start()
-        scanner = importlib.import_module(
-            f"dusty.scanners.dast.{args.suite}"
-        ).Scanner(context)
-        scanner.execute(config)
-        results = scanner.get_results()
-        reporter.on_finish(results)
+        # reporter.on_start()
+        # scanner = importlib.import_module(
+        #     f"dusty.scanners.dast.{args.suite}"
+        # ).Scanner(context)
+        # scanner.execute(config)
+        # results = scanner.get_results()
+        # reporter.on_finish(results)
