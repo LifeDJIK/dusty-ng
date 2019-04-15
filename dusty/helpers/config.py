@@ -26,10 +26,10 @@ from dusty.tools import log
 class ConfigHelper:
     """ Parses config """
 
-    def __init__(self, args):
+    def __init__(self, context):
         """ Initialize context instance """
-        log.info("Initializing context")
-        self.config = dict()
-        self.scanners = dict()  # scanner -> results, errors
-        self.processing = list()
-        self.reporters = list()
+        self.context = context
+
+    def load(self, config_variable, config_file, suite):
+        """ Load and parse config """
+        log.info("Loading config (%s, %s -> %s)", config_variable, config_file, suite)

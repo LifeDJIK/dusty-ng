@@ -26,6 +26,7 @@ from dusty.data import constants
 from dusty.models.module import ModuleModel
 from dusty.models.command import CommandModel
 from dusty.helpers.context import RunContext
+from dusty.helpers.config import ConfigHelper
 from dusty.scanners.performer import ScanningPerformer
 from dusty.processing.performer import ProcessingPerformer
 from dusty.reporters.performer import ReportingPerformer
@@ -77,10 +78,14 @@ class Command(ModuleModel, CommandModel):
         log.info("Starting")
         if args.call_from_legacy:
             log.warning("Called from legacy entry point")
+        # Make instances
         context = RunContext(args)
+        config = ConfigHelper(context)
         scanning = ScanningPerformer(context)
         processing = ProcessingPerformer(context)
         reporting = ReportingPerformer(context)
+        # Run
+        config.load(args.config_variable, args.config_file, args.suite)
         scanning.perform()
         processing.perform()
         reporting.perform()
@@ -93,7 +98,6 @@ class Command(ModuleModel, CommandModel):
         # reporter = importlib.import_module(
         #     f"dusty.reporters.html"
         # ).Reporter(context)
-
         # reporter.on_start()
         # scanner = importlib.import_module(
         #     f"dusty.scanners.dast.{args.suite}"
@@ -101,3 +105,7 @@ class Command(ModuleModel, CommandModel):
         # scanner.execute(config)
         # results = scanner.get_results()
         # reporter.on_finish(results)
+
+        # Автоматическая генерация конфига с документацией
+        # Тесты, pylint
+        # Низкая связность модулей
