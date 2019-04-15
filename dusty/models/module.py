@@ -33,12 +33,12 @@ class ModuleModel:
         """ Module description or help message """
         raise NotImplementedError()
 
-    # @staticmethod
-    # def fill_config(data_obj):
-    #     """ Make sample config """
-    #     raise NotImplementedError()
+    @staticmethod
+    def fill_config(data_obj):
+        """ Make sample config """
+        raise NotImplementedError()
 
-    # @staticmethod
-    # def validate_config(config):
-    #     """ Validate config """
-    #     raise NotImplementedError()
+    @staticmethod
+    def validate_config(config):
+        """ Validate config """
+        raise NotImplementedError()

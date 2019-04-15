@@ -17,13 +17,13 @@
 #   limitations under the License.
 
 """
-    Scanner model
+    Performer model
 """
 
 
-class ScannerModel:
-    """ Scanner base class """
+class PerformerModel:
+    """ Performer base class """
 
-    def execute(self, context):
-        """ Run the scanner """
+    def perform(self, context):
+        """ Perform action """
         raise NotImplementedError()

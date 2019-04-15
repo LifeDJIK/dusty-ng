@@ -17,13 +17,21 @@
 #   limitations under the License.
 
 """
-    Scanner model
+    Context helper
 """
 
+from dusty.tools import log
 
-class ScannerModel:
-    """ Scanner base class """
 
-    def execute(self, context):
-        """ Run the scanner """
-        raise NotImplementedError()
+class RunContext:
+    """ Holds invocation context """
+
+    def __init__(self, args):
+        """ Initialize context instance """
+        log.info("Initializing context")
+        self.args = args
+        self.config = dict()
+        self.results = list()
+        self.scanners = dict()  # scanner -> results, errors
+        self.processing = list()
+        self.reporters = list()

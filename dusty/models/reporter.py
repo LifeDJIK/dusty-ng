@@ -23,28 +23,28 @@
 class ReporterModel:
     """ Reporter base class """
 
-    # @staticmethod
-    # def depends_on():
-    #     """ Return required depencies """
-    #     raise NotImplementedError()
+    @staticmethod
+    def depends_on():
+        """ Return required depencies """
+        raise NotImplementedError()
 
-    # @staticmethod
-    # def run_before():
-    #     """ Return optional depencies """
-    #     raise NotImplementedError()
+    @staticmethod
+    def run_before():
+        """ Return optional depencies """
+        raise NotImplementedError()
 
-    def on_start(self):
+    def on_start(self, context):
         """ Called when testing starts """
         raise NotImplementedError()
 
-    def on_finish(self, results):
+    def on_finish(self, context):
         """ Called when testing ends """
         raise NotImplementedError()
 
-    # def on_scanner_start(self):
-    #     """ Called when scanner starts """
-    #     raise NotImplementedError()
+    def on_scanner_start(self, context, scanner):
+        """ Called when scanner starts """
+        raise NotImplementedError()
 
-    # def on_scanner_finish(self):
-    #     """ Called when scanner ends """
-    #     raise NotImplementedError()
+    def on_scanner_finish(self, context, scanner):
+        """ Called when scanner ends """
+        raise NotImplementedError()

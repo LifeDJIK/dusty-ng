@@ -25,6 +25,7 @@ from dusty.tools import log
 from dusty.data import constants
 from dusty.models.module import ModuleModel
 from dusty.models.command import CommandModel
+from dusty.helpers.context import RunContext
 
 
 class Command(ModuleModel, CommandModel):
@@ -39,6 +40,16 @@ class Command(ModuleModel, CommandModel):
     def get_description():
         """ Command help message (description) """
         return "run tests according to config"
+
+    @staticmethod
+    def fill_config(data_obj):
+        """ Make sample config """
+        # Will implement in future
+
+    @staticmethod
+    def validate_config(config):
+        """ Validate config """
+        # Will implement in future
 
     def __init__(self, argparser):
         """ Initialize command instance, add arguments """
@@ -60,18 +71,21 @@ class Command(ModuleModel, CommandModel):
 
     def execute(self, args):
         """ Run the command """
+        log.info("Starting")
         if args.call_from_legacy:
-            log.warning("Called from legacy")
-        log.info("Running tests")
-        context = {}
+            log.warning("Called from legacy entry point")
+        context = RunContext(args)
+
         config = {
             "protocol": "http",
             "host": "127.0.0.1",
             "port": 80,
         }
+
         reporter = importlib.import_module(
             f"dusty.reporters.html"
         ).Reporter(context)
+
         reporter.on_start()
         scanner = importlib.import_module(
             f"dusty.scanners.dast.{args.suite}"
