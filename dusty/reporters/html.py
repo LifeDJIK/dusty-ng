@@ -16,7 +16,7 @@
 #   limitations under the License.
 
 """
-    Scanner: html
+    Reporter: html
 """
 
 from dusty.tools import log
