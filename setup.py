@@ -46,6 +46,7 @@ try:
     version = f"{version}-{tag.decode('utf-8').strip()}"
 except:
     pass
+print(version)
 
 setup(
     name="dusty",
