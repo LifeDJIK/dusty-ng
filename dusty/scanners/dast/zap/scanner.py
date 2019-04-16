@@ -34,9 +34,9 @@ class Scanner(DependentModuleModel, ScannerModel):
 
     def __init__(self, context):
         """ Initialize scanner instance """
-        self._context = context
-        self._results = list()
-        self._errors = list()
+        self.context = context
+        self.results = list()
+        self.errors = list()
         self._zap_daemon = None
         self._zap = None
 
@@ -46,11 +46,11 @@ class Scanner(DependentModuleModel, ScannerModel):
 
     def get_results(self):
         """ Get results """
-        return self._results
+        return self.results
 
     def get_errors(self):
         """ Get errors """
-        return self._errors
+        return self.errors
 
     def _execute(self, config):
         """ Run the scanner """

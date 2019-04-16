@@ -30,6 +30,7 @@ class Reporter(DependentModuleModel, ReporterModel):
     def __init__(self, context):
         """ Initialize reporter instance """
         self.context = context
+        self.errors = list()
 
     def report(self):
         """ Report """
@@ -37,23 +38,19 @@ class Reporter(DependentModuleModel, ReporterModel):
 
     def get_errors(self):
         """ Get errors """
-        return list()
+        return self.errors
 
     def on_start(self):
         """ Called when testing starts """
-        log.info("Testing started")
 
     def on_finish(self):
         """ Called when testing ends """
-        log.info(f"Testing finished")
 
     def on_scanner_start(self, scanner):
         """ Called when scanner starts """
-        log.info("Scanner %s started", scanner)
 
     def on_scanner_finish(self, scanner):
         """ Called when scanner ends """
-        log.info("Scanner %s finished", scanner)
 
     @staticmethod
     def fill_config(data_obj):

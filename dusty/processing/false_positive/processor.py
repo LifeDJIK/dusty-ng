@@ -30,6 +30,7 @@ class Processor(DependentModuleModel, ProcessorModel):
     def __init__(self, context):
         """ Initialize processor instance """
         self.context = context
+        self.errors = list()
 
     def execute(self):
         """ Run the processor """
@@ -37,7 +38,7 @@ class Processor(DependentModuleModel, ProcessorModel):
 
     def get_errors(self):
         """ Get errors """
-        return list()
+        return self.errors
 
     @staticmethod
     def fill_config(data_obj):
