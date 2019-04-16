@@ -27,36 +27,6 @@ from dusty.models.reporter import ReporterModel
 class Reporter(DependentModuleModel, ReporterModel):
     """ Report results from scanners """
 
-    @staticmethod
-    def get_name():
-        """ Reporter name """
-        return "html"
-
-    @staticmethod
-    def get_description():
-        """ Reporter description """
-        return "HTML reporter"
-
-    @staticmethod
-    def fill_config(data_obj):
-        """ Make sample config """
-        raise NotImplementedError()
-
-    @staticmethod
-    def validate_config(config):
-        """ Validate config """
-        log.debug(f"Config: {config}")
-
-    @staticmethod
-    def depends_on():
-        """ Return required depencies """
-        return []
-
-    @staticmethod
-    def run_before():
-        """ Return optional depencies """
-        return ["email"]
-
     def __init__(self, context):
         """ Initialize reporter instance """
         self.context = context
@@ -84,3 +54,33 @@ class Reporter(DependentModuleModel, ReporterModel):
     def on_scanner_finish(self, scanner):
         """ Called when scanner ends """
         log.info("Scanner %s finished", scanner)
+
+    @staticmethod
+    def fill_config(data_obj):
+        """ Make sample config """
+        raise NotImplementedError()
+
+    @staticmethod
+    def validate_config(config):
+        """ Validate config """
+        log.debug(f"Config: {config}")
+
+    @staticmethod
+    def depends_on():
+        """ Return required depencies """
+        return []
+
+    @staticmethod
+    def run_before():
+        """ Return optional depencies """
+        return ["email"]
+
+    @staticmethod
+    def get_name():
+        """ Reporter name """
+        return "html"
+
+    @staticmethod
+    def get_description():
+        """ Reporter description """
+        return "HTML reporter"

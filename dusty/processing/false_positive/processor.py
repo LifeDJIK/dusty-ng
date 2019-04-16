@@ -27,15 +27,17 @@ from dusty.models.processor import ProcessorModel
 class Processor(DependentModuleModel, ProcessorModel):
     """ Process results: filter false-positives """
 
-    @staticmethod
-    def get_name():
-        """ Module name """
-        return "false_positive"
+    def __init__(self, context):
+        """ Initialize processor instance """
+        self.context = context
 
-    @staticmethod
-    def get_description():
-        """ Module description """
-        return "False-positive processor"
+    def execute(self):
+        """ Run the processor """
+        log.info("Processing false-positives")
+
+    def get_errors(self):
+        """ Get errors """
+        return list()
 
     @staticmethod
     def fill_config(data_obj):
@@ -57,14 +59,12 @@ class Processor(DependentModuleModel, ProcessorModel):
         """ Return optional depencies """
         return []
 
-    def __init__(self, context):
-        """ Initialize processor instance """
-        self.context = context
+    @staticmethod
+    def get_name():
+        """ Module name """
+        return "false_positive"
 
-    def execute(self):
-        """ Run the processor """
-        log.info("Processing false-positives")
-
-    def get_errors(self):
-        """ Get errors """
-        return list()
+    @staticmethod
+    def get_description():
+        """ Module description """
+        return "False-positive processor"

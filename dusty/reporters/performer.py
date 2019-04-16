@@ -32,28 +32,6 @@ from dusty.models.reporter import ReporterModel
 class ReportingPerformer(ModuleModel, PerformerModel, ReporterModel):
     """ Perform reporting """
 
-    @staticmethod
-    def get_name():
-        """ Module name """
-        return "reporting"
-
-    @staticmethod
-    def get_description():
-        """ Module description or help message """
-        raise "performs result reporting"
-
-    @staticmethod
-    def fill_config(data_obj):
-        """ Make sample config """
-        raise NotImplementedError()
-
-    @staticmethod
-    def validate_config(config):
-        """ Validate config """
-        if "reporters" not in config:
-            log.error("No reporters defined in config")
-            raise ValueError("No reporters configuration present")
-
     def __init__(self, context):
         """ Initialize instance """
         self.context = context
@@ -94,7 +72,10 @@ class ReportingPerformer(ModuleModel, PerformerModel, ReporterModel):
         # Run reporters
         for reporter_module_name in self.context.reporters:
             reporter = self.context.reporters[reporter_module_name]
-            reporter.report()
+            try:
+                reporter.report()
+            except:
+                log.exception("Reporter %s failed", reporter_module_name)
 
     def on_start(self):
         """ Called when testing starts """
@@ -118,12 +99,36 @@ class ReportingPerformer(ModuleModel, PerformerModel, ReporterModel):
         """ Called when scanner ends """
         self.scanner_finish_time[scanner] = time.time()
         log.info(
-            "Finished scanning with %s (%d seconds, %d results)",
+            "Finished scanning with %s (%d seconds, %d results, %d errors)",
             scanner,
             int(self.scanner_finish_time[scanner] - self.scanner_start_time[scanner]),
-            len(self.context.scanners[scanner].get_results())
+            len(self.context.scanners[scanner].get_results()),
+            len(self.context.scanners[scanner].get_errors())
         )
 
+    @staticmethod
+    def fill_config(data_obj):
+        """ Make sample config """
+        raise NotImplementedError()
+
+    @staticmethod
+    def validate_config(config):
+        """ Validate config """
+        if "reporters" not in config:
+            log.error("No reporters defined in config")
+            raise ValueError("No reporters configuration present")
+
+    @staticmethod
+    def get_name():
+        """ Module name """
+        return "reporting"
+
+    @staticmethod
+    def get_description():
+        """ Module description or help message """
+        raise "performs result reporting"
+
+    # Unused method from base class
     def report(self):
         """ Report """
         raise NotImplementedError()

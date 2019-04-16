@@ -32,39 +32,6 @@ from dusty.models.scanner import ScannerModel
 class Scanner(DependentModuleModel, ScannerModel):
     """ Scanner class """
 
-    @staticmethod
-    def get_name():
-        """ Module name """
-        return "OWASP ZAP"
-
-    @staticmethod
-    def get_description():
-        """ Module description or help message """
-        return "OWASP Zed Attack Proxy (ZAP)"
-
-    @staticmethod
-    def depends_on():
-        """ Return required depencies """
-        return []
-
-    @staticmethod
-    def run_before():
-        """ Return optional depencies """
-        return []
-
-    @staticmethod
-    def fill_config(data_obj):
-        """ Make sample config """
-        raise NotImplementedError()
-
-    @staticmethod
-    def validate_config(config):
-        """ Validate config """
-        log.debug(f"Config: {config}")
-        # if "scanners" not in config:
-        #     log.error("No scanners defined in config")
-        #     raise ValueError("No scanners configuration present")
-
     def __init__(self, context):
         """ Initialize scanner instance """
         self._context = context
@@ -73,6 +40,10 @@ class Scanner(DependentModuleModel, ScannerModel):
         self._zap_daemon = None
         self._zap = None
 
+    def execute(self):
+        """ Run the scanner """
+        log.info("Starting")
+
     def get_results(self):
         """ Get results """
         return self._results
@@ -80,10 +51,6 @@ class Scanner(DependentModuleModel, ScannerModel):
     def get_errors(self):
         """ Get errors """
         return self._errors
-
-    def execute(self):
-        """ Run the scanner """
-        log.info("Starting")
 
     def _execute(self, config):
         """ Run the scanner """
@@ -206,3 +173,36 @@ class Scanner(DependentModuleModel, ScannerModel):
                 time.sleep(1)
         if not zap_started:
             raise RuntimeError("ZAP failed to start")
+
+    @staticmethod
+    def fill_config(data_obj):
+        """ Make sample config """
+        raise NotImplementedError()
+
+    @staticmethod
+    def validate_config(config):
+        """ Validate config """
+        log.debug(f"Config: {config}")
+        # if "scanners" not in config:
+        #     log.error("No scanners defined in config")
+        #     raise ValueError("No scanners configuration present")
+
+    @staticmethod
+    def depends_on():
+        """ Return required depencies """
+        return []
+
+    @staticmethod
+    def run_before():
+        """ Return optional depencies """
+        return []
+
+    @staticmethod
+    def get_name():
+        """ Module name """
+        return "OWASP ZAP"
+
+    @staticmethod
+    def get_description():
+        """ Module description or help message """
+        return "OWASP Zed Attack Proxy (ZAP)"

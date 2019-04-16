@@ -30,28 +30,6 @@ from dusty.models.performer import PerformerModel
 class ScanningPerformer(ModuleModel, PerformerModel):
     """ Runs scanners """
 
-    @staticmethod
-    def get_name():
-        """ Module name """
-        return "scanning"
-
-    @staticmethod
-    def get_description():
-        """ Module description or help message """
-        raise "performs scanning"
-
-    @staticmethod
-    def fill_config(data_obj):
-        """ Make sample config """
-        raise NotImplementedError()
-
-    @staticmethod
-    def validate_config(config):
-        """ Validate config """
-        if "scanners" not in config:
-            log.error("No scanners defined in config")
-            raise ValueError("No scanners configuration present")
-
     def __init__(self, context):
         """ Initialize instance """
         self.context = context
@@ -98,8 +76,33 @@ class ScanningPerformer(ModuleModel, PerformerModel):
             log.info(f"Running {scanner_module_name} ({scanner.get_description()})")
             if reporting:
                 reporting.on_scanner_start(scanner_module_name)
-            scanner.execute()
+            try:
+                scanner.execute()
+            except:
+                log.exception("Scanner %s failed", scanner_module_name)
             if reporting:
                 reporting.on_scanner_finish(scanner_module_name)
         if reporting:
             reporting.on_finish()
+
+    @staticmethod
+    def fill_config(data_obj):
+        """ Make sample config """
+        raise NotImplementedError()
+
+    @staticmethod
+    def validate_config(config):
+        """ Validate config """
+        if "scanners" not in config:
+            log.error("No scanners defined in config")
+            raise ValueError("No scanners configuration present")
+
+    @staticmethod
+    def get_name():
+        """ Module name """
+        return "scanning"
+
+    @staticmethod
+    def get_description():
+        """ Module description or help message """
+        raise "performs scanning"

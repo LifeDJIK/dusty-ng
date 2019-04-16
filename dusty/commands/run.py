@@ -33,26 +33,6 @@ from dusty.reporters.performer import ReportingPerformer
 class Command(ModuleModel, CommandModel):
     """ Runs tests defined in config file """
 
-    @staticmethod
-    def get_name():
-        """ Command name """
-        return "run"
-
-    @staticmethod
-    def get_description():
-        """ Command help message (description) """
-        return "run tests according to config"
-
-    @staticmethod
-    def fill_config(data_obj):
-        """ Make sample config """
-        raise NotImplementedError()
-
-    @staticmethod
-    def validate_config(config):
-        """ Validate config """
-        raise NotImplementedError()
-
     def __init__(self, argparser):
         """ Initialize command instance, add arguments """
         argparser.add_argument(
@@ -101,3 +81,23 @@ class Command(ModuleModel, CommandModel):
         reporting.perform()
         # Done
         log.info("Done")
+
+    @staticmethod
+    def fill_config(data_obj):
+        """ Make sample config """
+        raise NotImplementedError()
+
+    @staticmethod
+    def validate_config(config):
+        """ Validate config """
+        raise NotImplementedError()
+
+    @staticmethod
+    def get_name():
+        """ Command name """
+        return "run"
+
+    @staticmethod
+    def get_description():
+        """ Command help message (description) """
+        return "run tests according to config"

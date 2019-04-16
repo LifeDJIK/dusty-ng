@@ -30,27 +30,6 @@ from dusty.models.performer import PerformerModel
 class ProcessingPerformer(ModuleModel, PerformerModel):
     """ Process results """
 
-    @staticmethod
-    def get_name():
-        """ Module name """
-        return "processing"
-
-    @staticmethod
-    def get_description():
-        """ Module description or help message """
-        raise "performs result processing"
-
-    @staticmethod
-    def fill_config(data_obj):
-        """ Make sample config """
-        raise NotImplementedError()
-
-    @staticmethod
-    def validate_config(config):
-        """ Validate config """
-        if "processing" not in config:
-            log.warning("No processing defined in config")
-
     def __init__(self, context):
         """ Initialize instance """
         self.context = context
@@ -92,4 +71,28 @@ class ProcessingPerformer(ModuleModel, PerformerModel):
         # Run processors
         for processor_module_name in self.context.processing:
             processor = self.context.processing[processor_module_name]
-            processor.execute()
+            try:
+                processor.execute()
+            except:
+                log.exception("Processor %s failed", processor_module_name)
+
+    @staticmethod
+    def fill_config(data_obj):
+        """ Make sample config """
+        raise NotImplementedError()
+
+    @staticmethod
+    def validate_config(config):
+        """ Validate config """
+        if "processing" not in config:
+            log.warning("No processing defined in config")
+
+    @staticmethod
+    def get_name():
+        """ Module name """
+        return "processing"
+
+    @staticmethod
+    def get_description():
+        """ Module description or help message """
+        raise "performs result processing"
