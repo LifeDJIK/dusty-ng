@@ -121,7 +121,7 @@ class ReportingPerformer(ModuleModel, PerformerModel, ReporterModel):
             "Finished scanning with %s (%d seconds, %d results)",
             scanner,
             int(self.scanner_finish_time[scanner] - self.scanner_start_time[scanner]),
-            len(scanner.get_results())
+            len(self.context.scanners[scanner].get_results())
         )
 
     def report(self):
