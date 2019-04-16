@@ -63,7 +63,7 @@ class Reporter(DependentModuleModel, ReporterModel):
 
     def report(self):
         """ Report """
-        raise NotImplementedError()
+        log.info("Reporting")
 
     def get_errors(self):
         """ Get errors """
