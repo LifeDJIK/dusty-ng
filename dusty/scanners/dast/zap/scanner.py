@@ -38,7 +38,6 @@ class Scanner(DependentModuleModel, ScannerModel):
         self.context = context
         self.config = \
             self.context.config["scanners"][__name__.split(".")[-3]][__name__.split(".")[-2]]
-        log.debug(self.config)
         self.results = list()
         self.errors = list()
         self._zap_daemon = None
@@ -52,6 +51,7 @@ class Scanner(DependentModuleModel, ScannerModel):
                 log.error("ZAP failed to start")
                 self.errors.append("ZAP daemon failed to start")
                 return
+            log.info("Target: %s", self.config.get("target"))
         except BaseException as exception:
             log.exception("Exception during ZAP scanning")
             self.errors.append(str(exception))
