@@ -16,5 +16,5 @@ LABEL author="artem_rozumenko@epam.com"
 LABEL updated.by="ivan_krakhmaliuk@epam.com"
 
 # Dusty
-RUN set -x && pip3 install git+https://github.com/LifeDJIK/dusty-ng.git
+RUN set -x && pip3 install --no-cache-dir git+https://github.com/LifeDJIK/dusty-ng.git
 ENTRYPOINT ["dusty"]
