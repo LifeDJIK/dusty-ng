@@ -36,6 +36,7 @@ class Scanner(DependentModuleModel, ScannerModel):
     def __init__(self, context):
         """ Initialize scanner instance """
         self.context = context
+        log.debug(__name__.split("."))
         self.results = list()
         self.errors = list()
         self._zap_daemon = None
