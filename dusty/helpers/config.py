@@ -47,7 +47,8 @@ class ConfigHelper:
         self.context.suite = suite
         config = self._variable_substitution(
             yaml.load(
-                os.path.expandvars(config_data)
+                os.path.expandvars(config_data),
+                Loader=yaml.FullLoader
             )
         )
         if not self._validate_config_base(config):
