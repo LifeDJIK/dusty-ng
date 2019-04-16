@@ -20,7 +20,7 @@
     Reporting performer
 """
 
-import importlib
+# import importlib
 
 from dusty.tools import log
 from dusty.models.module import ModuleModel
@@ -49,7 +49,9 @@ class ReportingPerformer(ModuleModel, PerformerModel, ReporterModel):
     @staticmethod
     def validate_config(config):
         """ Validate config """
-        raise NotImplementedError()
+        if "reporters" not in config:
+            log.error("No reporters defined in config")
+            raise ValueError("No reporters configuration present")
 
     def __init__(self, context):
         """ Initialize instance """

@@ -20,7 +20,7 @@
     Processing performer
 """
 
-import importlib
+# import importlib
 
 from dusty.tools import log
 from dusty.models.module import ModuleModel
@@ -48,7 +48,8 @@ class ProcessingPerformer(ModuleModel, PerformerModel):
     @staticmethod
     def validate_config(config):
         """ Validate config """
-        raise NotImplementedError()
+        if "processing" not in config:
+            log.warning("No processing defined in config")
 
     def __init__(self, context):
         """ Initialize instance """

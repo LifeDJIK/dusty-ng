@@ -48,7 +48,9 @@ class ScanningPerformer(ModuleModel, PerformerModel):
     @staticmethod
     def validate_config(config):
         """ Validate config """
-        raise NotImplementedError()
+        if "scanners" not in config:
+            log.error("No scanners defined in config")
+            raise ValueError("No scanners configuration present")
 
     def __init__(self, context):
         """ Initialize instance """
@@ -57,17 +59,29 @@ class ScanningPerformer(ModuleModel, PerformerModel):
     def prepare(self):
         """ Prepare for action """
         log.info("Preparing")
-        # reporter = importlib.import_module(
-        #     f"dusty.reporters.html"
-        # ).Reporter(context)
-        # reporter.on_start()
-        # scanner = importlib.import_module(
-        #     f"dusty.scanners.dast.{args.suite}"
-        # ).Scanner(context)
-        # scanner.execute(config)
-        # results = scanner.get_results()
-        # reporter.on_finish(results)
+        general_config = dict()
+        if "scanners" in self.context.config["general"]:
+            general_config = self.context.config["general"]["scanners"]
+        config = self.context.config["scanners"]
+        for scanner_type in config:
+            for scanner_name in config[scanner_type]:
+                # Merge general config
+                if scanner_type in general_config:
+                    merged_config = general_config[scanner_type].copy()
+                    merged_config.update(config[scanner_type][scanner_name])
+                    config[scanner_type][scanner_name] = merged_config
+                # Init scanner instance
+                scanner = importlib.import_module(
+                    f"dusty.scanners.{scanner_type}.{scanner_name}.scanner"
+                ).Scanner(self.context)
+                self.context.scanners[scanner.get_name()] = scanner
+                # Validate config
+                scanner.validate_config(config[scanner_type][scanner_name])
 
     def perform(self):
         """ Perform action """
         log.info("Starting")
+        for scanner_module_name in self.context.scanners:
+            scanner = self.context.scanners[scanner_module_name]
+            log.info(f"Running {scanner.get_name()} ({scanner.get_description()})")
+            scanner.execute()

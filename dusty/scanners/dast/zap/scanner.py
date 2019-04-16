@@ -34,13 +34,26 @@ class Scanner(ModuleModel, ScannerModel):
 
     @staticmethod
     def get_name():
-        """ Scanner name, such as 'OWASP ZAP' """
+        """ Module name """
         return "OWASP ZAP"
 
     @staticmethod
     def get_description():
-        """ Scanner description """
-        return "OWASP Zed Attack Proxy (ZAP)"
+        """ Module description or help message """
+        raise "OWASP Zed Attack Proxy (ZAP)"
+
+    @staticmethod
+    def fill_config(data_obj):
+        """ Make sample config """
+        raise NotImplementedError()
+
+    @staticmethod
+    def validate_config(config):
+        """ Validate config """
+        log.debug(f"Config: {config}")
+        # if "scanners" not in config:
+        #     log.error("No scanners defined in config")
+        #     raise ValueError("No scanners configuration present")
 
     def __init__(self, context):
         """ Initialize scanner instance """
@@ -49,7 +62,19 @@ class Scanner(ModuleModel, ScannerModel):
         self._zap_daemon = None
         self._zap = None
 
-    def execute(self, config):
+    def execute(self):
+        """ Run the scanner """
+        raise NotImplementedError()
+
+    def get_results(self):
+        """ Get results """
+        return self._results
+
+    def get_errors(self):
+        """ Get errors """
+        raise NotImplementedError()
+
+    def _execute(self, config):
         """ Run the scanner """
         log.info("Starting")
         try:
@@ -125,10 +150,6 @@ class Scanner(ModuleModel, ScannerModel):
         # self._results.append(zap.core.jsonreport())
         # Stop zap
         # self._stop_zap()
-
-    def get_results(self):
-        """ Get findings """
-        return self._results
 
     def _start_zap(self):
         log.info("Starting ZAP daemon")
