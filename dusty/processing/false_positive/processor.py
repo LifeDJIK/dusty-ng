@@ -38,14 +38,24 @@ class Processor(DependentModuleModel, ProcessorModel):
         return "False-positive processor"
 
     @staticmethod
+    def fill_config(data_obj):
+        """ Make sample config """
+        raise NotImplementedError()
+
+    @staticmethod
+    def validate_config(config):
+        """ Validate config """
+        raise NotImplementedError()
+
+    @staticmethod
     def depends_on():
         """ Return required depencies """
-        raise NotImplementedError()
+        return []
 
     @staticmethod
     def run_before():
         """ Return optional depencies """
-        raise NotImplementedError()
+        return []
 
     def __init__(self, context):
         """ Initialize processor instance """
@@ -57,4 +67,4 @@ class Processor(DependentModuleModel, ProcessorModel):
 
     def get_errors(self):
         """ Get errors """
-        raise NotImplementedError()
+        return list()

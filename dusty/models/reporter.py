@@ -23,10 +23,6 @@
 class ReporterModel:
     """ Reporter base class """
 
-    def get_errors(self):
-        """ Get errors """
-        raise NotImplementedError()
-
     def on_start(self):
         """ Called when testing starts """
         raise NotImplementedError()
@@ -41,4 +37,12 @@ class ReporterModel:
 
     def on_scanner_finish(self, scanner):
         """ Called when scanner ends """
+        raise NotImplementedError()
+
+    def report(self):
+        """ Report """
+        raise NotImplementedError()
+
+    def get_errors(self):
+        """ Get errors """
         raise NotImplementedError()

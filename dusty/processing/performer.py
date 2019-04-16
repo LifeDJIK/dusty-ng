@@ -20,7 +20,7 @@
     Processing performer
 """
 
-# import importlib
+import importlib
 
 from dusty.tools import log
 from dusty.models.module import ModuleModel
@@ -58,11 +58,33 @@ class ProcessingPerformer(ModuleModel, PerformerModel):
     def prepare(self):
         """ Prepare for action """
         log.info("Preparing")
+        general_config = dict()
+        if "processing" in self.context.config["general"]:
+            general_config = self.context.config["general"]["processing"]
+        config = self.context.config["processing"]
+        for processor_name in config:
+            # Merge general config
+            merged_config = general_config.copy()
+            merged_config.update(config[processor_name])
+            config[processor_name] = merged_config
+            # Init processor instance
+            processor = importlib.import_module(
+                f"dusty.processing.{processor_name}.processor"
+            ).Processor(self.context)
+            # Validate config
+            processor.validate_config(config[processor_name])
+            # Add to context
+            self.context.processing[processor.get_name()] = processor
 
     def perform(self):
         """ Perform action """
         log.info("Starting result processing")
+        # Collect all scanner results and errors
         for scanner_module_name in self.context.scanners:
             scanner = self.context.scanners[scanner_module_name]
             self.context.results.extend(scanner.get_results())
             self.context.errors[scanner_module_name] = scanner.get_errors()
+        # Run processors
+        for processor_module_name in self.context.processing:
+            processor = self.context.processing[processor_module_name]
+            processor.execute()

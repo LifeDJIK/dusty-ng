@@ -45,12 +45,12 @@ class Scanner(DependentModuleModel, ScannerModel):
     @staticmethod
     def depends_on():
         """ Return required depencies """
-        raise NotImplementedError()
+        return []
 
     @staticmethod
     def run_before():
         """ Return optional depencies """
-        raise NotImplementedError()
+        return []
 
     @staticmethod
     def fill_config(data_obj):
@@ -69,6 +69,7 @@ class Scanner(DependentModuleModel, ScannerModel):
         """ Initialize scanner instance """
         self._context = context
         self._results = list()
+        self._errors = list()
         self._zap_daemon = None
         self._zap = None
 
@@ -78,7 +79,7 @@ class Scanner(DependentModuleModel, ScannerModel):
 
     def get_errors(self):
         """ Get errors """
-        raise NotImplementedError()
+        return self._errors
 
     def execute(self):
         """ Run the scanner """

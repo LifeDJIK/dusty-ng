@@ -81,12 +81,6 @@ class ReportingPerformer(ModuleModel, PerformerModel, ReporterModel):
         """ Called when scanner ends """
         log.info("Finished scanning with %s", scanner)
 
-    @staticmethod
-    def depends_on():
-        """ Return required depencies """
-        raise NotImplementedError()
-
-    @staticmethod
-    def run_before():
-        """ Return optional depencies """
+    def report(self):
+        """ Report """
         raise NotImplementedError()

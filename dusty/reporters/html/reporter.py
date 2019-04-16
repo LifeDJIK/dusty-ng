@@ -37,13 +37,37 @@ class Reporter(DependentModuleModel, ReporterModel):
         """ Reporter description """
         return "HTML reporter"
 
-    def get_errors(self):
-        """ Get errors """
+    @staticmethod
+    def fill_config(data_obj):
+        """ Make sample config """
         raise NotImplementedError()
+
+    @staticmethod
+    def validate_config(config):
+        """ Validate config """
+        raise NotImplementedError()
+
+    @staticmethod
+    def depends_on():
+        """ Return required depencies """
+        return []
+
+    @staticmethod
+    def run_before():
+        """ Return optional depencies """
+        return ["email"]
 
     def __init__(self, context):
         """ Initialize reporter instance """
         self.context = context
+
+    def report(self):
+        """ Report """
+        raise NotImplementedError()
+
+    def get_errors(self):
+        """ Get errors """
+        return list()
 
     def on_start(self):
         """ Called when testing starts """
@@ -51,6 +75,12 @@ class Reporter(DependentModuleModel, ReporterModel):
 
     def on_finish(self):
         """ Called when testing ends """
-        log.info(f"Testing done, got {len(self.context.results)} results")
-        if self.context.results:
-            log.debug(self.context.results[0])
+        log.info(f"Testing finished")
+
+    def on_scanner_start(self, scanner):
+        """ Called when scanner starts """
+        log.info("Scanner %s started", scanner)
+
+    def on_scanner_finish(self, scanner):
+        """ Called when scanner ends """
+        log.info("Scanner %s finished", scanner)
