@@ -45,6 +45,9 @@ class Scanner(DependentModuleModel, ScannerModel):
         """ Run the scanner """
         try:
             self._start_zap()
+            if not self._wait_for_zap_start():
+                log.error("ZAP failed to start")
+                return
         finally:
             self._stop_zap()
 
@@ -80,7 +83,7 @@ class Scanner(DependentModuleModel, ScannerModel):
         for _ in range(600):
             try:
                 log.info("Started ZAP %s", self._zap_api.core.version)
-                return True
+                return False
             except IOError:
                 time.sleep(1)
         return False
