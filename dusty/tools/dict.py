@@ -16,17 +16,16 @@
 #   limitations under the License.
 
 """
-    Constants
+    Dict tools
 """
 
+from collections import OrderedDict
 
-LOG_FORMAT = "%(asctime)s - %(levelname)8s - %(name)s - %(message)s"
-LOG_DATE_FORMAT = "%Y.%m.%d %H:%M:%S"
 
-DEFAULT_CONFIG_PATH = "/tmp/scan-config.yaml"
-DEFAULT_CONFIG_ENV_KEY = "CARRIER_SCAN_CONFIG"
+# Taken from https://docs.python.org/3/library/collections.html#ordereddict-examples-and-recipes
+class LastUpdatedOrderedDict(OrderedDict):
+    """ Store items in the order the keys were last added """
 
-CONFIG_VERSION_KEY = "config_version"
-CURRENT_CONFIG_VERSION = 2
-
-ZAP_PATH = ""
+    def __setitem__(self, key, value):
+        super().__setitem__(key, value)
+        super().move_to_end(key)

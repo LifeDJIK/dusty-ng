@@ -22,9 +22,10 @@
 
 from dusty.tools import log
 from dusty.models.performer import PerformerModel
+from dusty.models.reporter import ReporterModel
 
 
-class ReportingPerformer(PerformerModel):
+class ReportingPerformer(PerformerModel, ReporterModel):
     """ Perform reporting """
 
     def __init__(self, context):
@@ -34,3 +35,29 @@ class ReportingPerformer(PerformerModel):
     def perform(self):
         """ Perform action """
         log.info("Starting")
+
+    def on_start(self):
+        """ Called when testing starts """
+        raise NotImplementedError()
+
+    def on_finish(self):
+        """ Called when testing ends """
+        raise NotImplementedError()
+
+    def on_scanner_start(self, scanner):
+        """ Called when scanner starts """
+        raise NotImplementedError()
+
+    def on_scanner_finish(self, scanner):
+        """ Called when scanner ends """
+        raise NotImplementedError()
+
+    @staticmethod
+    def depends_on():
+        """ Return required depencies """
+        raise NotImplementedError()
+
+    @staticmethod
+    def run_before():
+        """ Return optional depencies """
+        raise NotImplementedError()

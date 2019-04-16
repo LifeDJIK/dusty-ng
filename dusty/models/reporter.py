@@ -33,18 +33,18 @@ class ReporterModel:
         """ Return optional depencies """
         raise NotImplementedError()
 
-    def on_start(self, context):
+    def on_start(self):
         """ Called when testing starts """
         raise NotImplementedError()
 
-    def on_finish(self, context):
+    def on_finish(self):
         """ Called when testing ends """
         raise NotImplementedError()
 
-    def on_scanner_start(self, context, scanner):
+    def on_scanner_start(self, scanner):
         """ Called when scanner starts """
         raise NotImplementedError()
 
-    def on_scanner_finish(self, context, scanner):
+    def on_scanner_finish(self, scanner):
         """ Called when scanner ends """
         raise NotImplementedError()

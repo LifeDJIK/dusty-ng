@@ -20,7 +20,12 @@
     Config helper
 """
 
+import os
+import re
+import yaml
+
 from dusty.tools import log
+from dusty.data import constants
 
 
 class ConfigHelper:
@@ -32,4 +37,45 @@ class ConfigHelper:
 
     def load(self, config_variable, config_file, suite):
         """ Load and parse config """
-        log.info("Loading config (%s, %s -> %s)", config_variable, config_file, suite)
+        config_data = os.environ.get(config_variable, None)
+        if not config_data:
+            log.info("Loading %s config from %s", suite, config_file)
+            with open(config_file, "rb") as file_:
+                config_data = file_.read()
+        else:
+            log.info("Loading %s config from %s", suite, config_variable)
+        self.context.suite = suite
+        config = self._variable_substitution(
+            yaml.load(
+                os.path.expandvars(config_data)
+            )
+        )
+        if not self._validate_config_base(config):
+            raise ValueError("Invalid config")
+        self.context.config = config["suites"].get(suite)
+
+    def _variable_substitution(self, obj):
+        """ Allows to use raw environmental variables inside YAML/JSON config """
+        if isinstance(obj, dict):
+            for key in list(obj.keys()):
+                obj[self._variable_substitution(key)] = \
+                    self._variable_substitution(obj.pop(key))
+        if isinstance(obj, list):
+            for index, item in enumerate(obj):
+                obj[index] = self._variable_substitution(item)
+        if isinstance(obj, str) and re.match(r"^\@[a-zA-Z_][a-zA-Z0-9_]*$", obj) \
+                and obj[1:] in os.environ:
+            return os.environ[obj[1:]]
+        return obj
+
+    def _validate_config_base(self, config):
+        if config.get(constants.CONFIG_VERSION_KEY, 0) != constants.CURRENT_CONFIG_VERSION:
+            log.error("Invalid config version")
+            return False
+        if "suites" not in config:
+            log.error("Suites are not defined")
+            return False
+        if not config["suites"].get(self.context.suite, None):
+            log.error("Suite is not defined: %s", self.context.suite)
+            return False
+        return True

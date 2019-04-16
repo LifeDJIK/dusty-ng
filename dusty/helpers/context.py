@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 # coding=utf-8
-# pylint: disable=I0011,R0903
+# pylint: disable=I0011,R0903,R0902
 
 #   Copyright 2019 getcarrier.io
 #
@@ -21,6 +21,7 @@
 """
 
 from dusty.tools import log
+from dusty.tools.dict import LastUpdatedOrderedDict
 
 
 class RunContext:
@@ -31,7 +32,9 @@ class RunContext:
         log.info("Initializing context")
         self.args = args
         self.config = dict()
+        self.suite = ""
         self.results = list()
-        self.scanners = dict()  # scanner -> results, errors
-        self.processing = list()
-        self.reporters = list()
+        self.scanners = LastUpdatedOrderedDict()  # scanner -> instance
+        self.processing = LastUpdatedOrderedDict()  # processor -> instacne
+        self.reporters = LastUpdatedOrderedDict()  # reporter -> instance
+        self.performers = dict()  # performer -> instance

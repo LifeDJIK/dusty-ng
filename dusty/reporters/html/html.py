@@ -39,13 +39,14 @@ class Reporter(ModuleModel, ReporterModel):
 
     def __init__(self, context):
         """ Initialize reporter instance """
+        self.context = context
 
     def on_start(self):
         """ Called when testing starts """
         log.info("Testing started")
 
-    def on_finish(self, results):
+    def on_finish(self):
         """ Called when testing ends """
-        log.info(f"Testing done, got {len(results)} results")
-        if results:
-            log.debug(results[0])
+        log.info(f"Testing done, got {len(self.context.results)} results")
+        if self.context.results:
+            log.debug(self.context.results[0])
