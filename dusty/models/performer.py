@@ -24,6 +24,10 @@
 class PerformerModel:
     """ Performer base class """
 
+    def prepare(self):
+        """ Prepare for action """
+        raise NotImplementedError()
+
     def perform(self):
         """ Perform action """
         raise NotImplementedError()

@@ -24,6 +24,14 @@
 class ScannerModel:
     """ Scanner base class """
 
-    def execute(self, context):
+    def execute(self):
         """ Run the scanner """
+        raise NotImplementedError()
+
+    def get_results(self):
+        """ Get results """
+        raise NotImplementedError()
+
+    def get_errors(self):
+        """ Get errors """
         raise NotImplementedError()

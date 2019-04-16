@@ -20,17 +20,44 @@
     Reporting performer
 """
 
+import importlib
+
 from dusty.tools import log
+from dusty.models.module import ModuleModel
 from dusty.models.performer import PerformerModel
 from dusty.models.reporter import ReporterModel
 
 
-class ReportingPerformer(PerformerModel, ReporterModel):
+class ReportingPerformer(ModuleModel, PerformerModel, ReporterModel):
     """ Perform reporting """
+
+    @staticmethod
+    def get_name():
+        """ Module name """
+        return "reporting"
+
+    @staticmethod
+    def get_description():
+        """ Module description or help message """
+        raise "performs result reporting"
+
+    @staticmethod
+    def fill_config(data_obj):
+        """ Make sample config """
+        raise NotImplementedError()
+
+    @staticmethod
+    def validate_config(config):
+        """ Validate config """
+        raise NotImplementedError()
 
     def __init__(self, context):
         """ Initialize instance """
         self.context = context
+
+    def prepare(self):
+        """ Prepare for action """
+        log.info("Preparing")
 
     def perform(self):
         """ Perform action """

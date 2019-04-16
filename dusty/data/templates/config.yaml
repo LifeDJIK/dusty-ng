@@ -15,8 +15,10 @@ suites: # Test suites
         zap:
           scan_types: all
     processing: # Processing config
-      false_positive: /tmp/false_positive.config
-      min_severity_filter: Major
+      false_positive:
+        file: /tmp/false_positive.config
+      min_severity_filter:
+        severity: Major
     reporters: # Reporter config
       html:
         report_path: /report

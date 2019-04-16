@@ -20,16 +20,43 @@
     Processing performer
 """
 
+import importlib
+
 from dusty.tools import log
+from dusty.models.module import ModuleModel
 from dusty.models.performer import PerformerModel
 
 
-class ProcessingPerformer(PerformerModel):
+class ProcessingPerformer(ModuleModel, PerformerModel):
     """ Process results """
+
+    @staticmethod
+    def get_name():
+        """ Module name """
+        return "processing"
+
+    @staticmethod
+    def get_description():
+        """ Module description or help message """
+        raise "performs result processing"
+
+    @staticmethod
+    def fill_config(data_obj):
+        """ Make sample config """
+        raise NotImplementedError()
+
+    @staticmethod
+    def validate_config(config):
+        """ Validate config """
+        raise NotImplementedError()
 
     def __init__(self, context):
         """ Initialize instance """
         self.context = context
+
+    def prepare(self):
+        """ Prepare for action """
+        log.info("Preparing")
 
     def perform(self):
         """ Perform action """

@@ -19,8 +19,6 @@
     Command: run
 """
 
-# import importlib
-
 from dusty.tools import log
 from dusty.data import constants
 from dusty.models.module import ModuleModel
@@ -48,12 +46,12 @@ class Command(ModuleModel, CommandModel):
     @staticmethod
     def fill_config(data_obj):
         """ Make sample config """
-        # Will implement in future
+        raise NotImplementedError()
 
     @staticmethod
     def validate_config(config):
         """ Validate config """
-        # Will implement in future
+        raise NotImplementedError()
 
     def __init__(self, argparser):
         """ Initialize command instance, add arguments """
@@ -84,28 +82,16 @@ class Command(ModuleModel, CommandModel):
         scanning = ScanningPerformer(context)
         processing = ProcessingPerformer(context)
         reporting = ReportingPerformer(context)
-        # Run
+        # Init config
         config.load(args.config_variable, args.config_file, args.suite)
+        scanning.validate_config(context.config)
+        processing.validate_config(context.config)
+        reporting.validate_config(context.config)
+        # Prepare
+        scanning.prepare()
+        processing.prepare()
+        reporting.prepare()
+        # Perform
         scanning.perform()
         processing.perform()
         reporting.perform()
-
-        # config = {
-        #     "protocol": "http",
-        #     "host": "127.0.0.1",
-        #     "port": 80,
-        # }
-        # reporter = importlib.import_module(
-        #     f"dusty.reporters.html"
-        # ).Reporter(context)
-        # reporter.on_start()
-        # scanner = importlib.import_module(
-        #     f"dusty.scanners.dast.{args.suite}"
-        # ).Scanner(context)
-        # scanner.execute(config)
-        # results = scanner.get_results()
-        # reporter.on_finish(results)
-
-        # Автоматическая генерация конфига с документацией
-        # Тесты, pylint
-        # Низкая связность модулей
