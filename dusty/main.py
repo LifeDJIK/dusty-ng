@@ -71,3 +71,5 @@ def main():
     log.debug("Loaded commands: {}".format(", ".join(list(commands.keys()))))
     # Run selected command
     commands[args.command].execute(args)
+    # Display bye-bye message
+    log.info("All done. Have a nice day")
