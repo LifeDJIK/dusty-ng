@@ -16,17 +16,21 @@
 #   limitations under the License.
 
 """
-    Constants
+    Status tools
 """
 
+import time
 
-LOG_FORMAT = "%(asctime)s - %(levelname)8s - %(name)s - %(message)s"
-LOG_DATE_FORMAT = "%Y.%m.%d %H:%M:%S %Z"
+from dusty.tools import log
 
-DEFAULT_CONFIG_PATH = "/tmp/scan-config.yaml"
-DEFAULT_CONFIG_ENV_KEY = "CARRIER_SCAN_CONFIG"
 
-CONFIG_VERSION_KEY = "config_version"
-CURRENT_CONFIG_VERSION = 2
-
-ZAP_PATH = "/opt/zap/zap.jar"
+def wait_for_completion(condition, status, message, interval=10):
+    """ Watch progress """
+    current_status = status()
+    log.get_outer_logger().info(message, current_status)
+    while condition():
+        time.sleep(interval)
+        next_status = status()
+        if next_status != current_status:
+            log.get_outer_logger().info(message, next_status)
+        current_status = next_status

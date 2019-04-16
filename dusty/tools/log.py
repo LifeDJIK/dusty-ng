@@ -44,7 +44,7 @@ def get_logger():
     )
 
 
-def __get_logger():
+def get_outer_logger():
     """ Get logger for callers context (for use in this module) """
     return logging.getLogger(
         inspect.currentframe().f_back.f_back.f_globals["__name__"]
@@ -53,34 +53,34 @@ def __get_logger():
 
 def debug(msg, *args, **kwargs):
     """ Logs a message with level DEBUG """
-    return __get_logger().debug(msg, *args, **kwargs)
+    return get_outer_logger().debug(msg, *args, **kwargs)
 
 
 def info(msg, *args, **kwargs):
     """ Logs a message with level INFO """
-    return __get_logger().info(msg, *args, **kwargs)
+    return get_outer_logger().info(msg, *args, **kwargs)
 
 
 def warning(msg, *args, **kwargs):
     """ Logs a message with level WARNING """
-    return __get_logger().warning(msg, *args, **kwargs)
+    return get_outer_logger().warning(msg, *args, **kwargs)
 
 
 def error(msg, *args, **kwargs):
     """ Logs a message with level ERROR """
-    return __get_logger().error(msg, *args, **kwargs)
+    return get_outer_logger().error(msg, *args, **kwargs)
 
 
 def critical(msg, *args, **kwargs):
     """ Logs a message with level CRITICAL """
-    return __get_logger().critical(msg, *args, **kwargs)
+    return get_outer_logger().critical(msg, *args, **kwargs)
 
 
 def log(lvl, msg, *args, **kwargs):
     """ Logs a message with integer level lvl """
-    return __get_logger().log(lvl, msg, *args, **kwargs)
+    return get_outer_logger().log(lvl, msg, *args, **kwargs)
 
 
 def exception(msg, *args, **kwargs):
     """ Logs a message with level ERROR inside exception handler """
-    return __get_logger().exception(msg, *args, **kwargs)
+    return get_outer_logger().exception(msg, *args, **kwargs)
