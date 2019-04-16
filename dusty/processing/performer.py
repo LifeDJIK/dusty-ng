@@ -61,4 +61,8 @@ class ProcessingPerformer(ModuleModel, PerformerModel):
 
     def perform(self):
         """ Perform action """
-        log.info("Starting")
+        log.info("Starting result processing")
+        for scanner_module_name in self.context.scanners:
+            scanner = self.context.scanners[scanner_module_name]
+            self.context.results.extend(scanner.get_results())
+            self.context.errors[scanner_module_name] = scanner.get_errors()

@@ -42,3 +42,17 @@ class ModuleModel:
     def validate_config(config):
         """ Validate config """
         raise NotImplementedError()
+
+
+class DependentModuleModel(ModuleModel):
+    """ Dependent module base class """
+
+    @staticmethod
+    def depends_on():
+        """ Return required depencies """
+        raise NotImplementedError()
+
+    @staticmethod
+    def run_before():
+        """ Return optional depencies """
+        raise NotImplementedError()

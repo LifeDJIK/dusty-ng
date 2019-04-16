@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 # coding=utf-8
+# pylint: disable=I0011,R0903
 
 #   Copyright 2019 getcarrier.io
 #
@@ -16,29 +17,17 @@
 #   limitations under the License.
 
 """
-    Reporter model
+    Processor model
 """
 
 
-class ReporterModel:
-    """ Reporter base class """
+class ProcessorModel:
+    """ Processor base class """
+
+    def execute(self):
+        """ Run the processor """
+        raise NotImplementedError()
 
     def get_errors(self):
         """ Get errors """
-        raise NotImplementedError()
-
-    def on_start(self):
-        """ Called when testing starts """
-        raise NotImplementedError()
-
-    def on_finish(self):
-        """ Called when testing ends """
-        raise NotImplementedError()
-
-    def on_scanner_start(self, scanner):
-        """ Called when scanner starts """
-        raise NotImplementedError()
-
-    def on_scanner_finish(self, scanner):
-        """ Called when scanner ends """
         raise NotImplementedError()

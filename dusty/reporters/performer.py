@@ -63,7 +63,7 @@ class ReportingPerformer(ModuleModel, PerformerModel, ReporterModel):
 
     def perform(self):
         """ Perform action """
-        log.info("Starting")
+        log.info("Starting reporting")
 
     def on_start(self):
         """ Called when testing starts """

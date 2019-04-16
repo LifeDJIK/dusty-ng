@@ -16,41 +16,45 @@
 #   limitations under the License.
 
 """
-    Reporter: html
+    Processor: false_positive
 """
 
 from dusty.tools import log
 from dusty.models.module import DependentModuleModel
-from dusty.models.reporter import ReporterModel
+from dusty.models.processor import ProcessorModel
 
 
-class Reporter(DependentModuleModel, ReporterModel):
-    """ Report results from scanners """
+class Processor(DependentModuleModel, ProcessorModel):
+    """ Process results: filter false-positives """
 
     @staticmethod
     def get_name():
-        """ Reporter name """
-        return "html"
+        """ Module name """
+        return "false_positive"
 
     @staticmethod
     def get_description():
-        """ Reporter description """
-        return "HTML reporter"
+        """ Module description """
+        return "False-positive processor"
+
+    @staticmethod
+    def depends_on():
+        """ Return required depencies """
+        raise NotImplementedError()
+
+    @staticmethod
+    def run_before():
+        """ Return optional depencies """
+        raise NotImplementedError()
+
+    def __init__(self, context):
+        """ Initialize processor instance """
+        self.context = context
+
+    def execute(self):
+        """ Run the processor """
+        log.info("Processing false-positives")
 
     def get_errors(self):
         """ Get errors """
         raise NotImplementedError()
-
-    def __init__(self, context):
-        """ Initialize reporter instance """
-        self.context = context
-
-    def on_start(self):
-        """ Called when testing starts """
-        log.info("Testing started")
-
-    def on_finish(self):
-        """ Called when testing ends """
-        log.info(f"Testing done, got {len(self.context.results)} results")
-        if self.context.results:
-            log.debug(self.context.results[0])

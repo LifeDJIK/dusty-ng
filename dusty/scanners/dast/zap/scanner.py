@@ -25,11 +25,11 @@ import subprocess
 from zapv2 import ZAPv2
 
 from dusty.tools import log
-from dusty.models.module import ModuleModel
+from dusty.models.module import DependentModuleModel
 from dusty.models.scanner import ScannerModel
 
 
-class Scanner(ModuleModel, ScannerModel):
+class Scanner(DependentModuleModel, ScannerModel):
     """ Scanner class """
 
     @staticmethod
@@ -41,6 +41,16 @@ class Scanner(ModuleModel, ScannerModel):
     def get_description():
         """ Module description or help message """
         return "OWASP Zed Attack Proxy (ZAP)"
+
+    @staticmethod
+    def depends_on():
+        """ Return required depencies """
+        raise NotImplementedError()
+
+    @staticmethod
+    def run_before():
+        """ Return optional depencies """
+        raise NotImplementedError()
 
     @staticmethod
     def fill_config(data_obj):

@@ -81,7 +81,7 @@ class ScanningPerformer(ModuleModel, PerformerModel):
 
     def perform(self):
         """ Perform action """
-        log.info("Starting")
+        log.info("Starting scanning")
         reporting = self.context.performers.get("reporting", None)
         if reporting:
             reporting.on_start()
