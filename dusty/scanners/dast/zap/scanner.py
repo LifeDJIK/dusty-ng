@@ -62,10 +62,6 @@ class Scanner(ModuleModel, ScannerModel):
         self._zap_daemon = None
         self._zap = None
 
-    def execute(self):
-        """ Run the scanner """
-        raise NotImplementedError()
-
     def get_results(self):
         """ Get results """
         return self._results
@@ -73,6 +69,10 @@ class Scanner(ModuleModel, ScannerModel):
     def get_errors(self):
         """ Get errors """
         raise NotImplementedError()
+
+    def execute(self):
+        """ Run the scanner """
+        log.info("Starting")
 
     def _execute(self, config):
         """ Run the scanner """

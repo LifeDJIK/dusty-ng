@@ -67,19 +67,19 @@ class ReportingPerformer(ModuleModel, PerformerModel, ReporterModel):
 
     def on_start(self):
         """ Called when testing starts """
-        raise NotImplementedError()
+        log.info("Testing started")
 
     def on_finish(self):
         """ Called when testing ends """
-        raise NotImplementedError()
+        log.info("Testing finished")
 
     def on_scanner_start(self, scanner):
         """ Called when scanner starts """
-        raise NotImplementedError()
+        log.info("Started scanning with %s", scanner)
 
     def on_scanner_finish(self, scanner):
         """ Called when scanner ends """
-        raise NotImplementedError()
+        log.info("Finished scanning with %s", scanner)
 
     @staticmethod
     def depends_on():

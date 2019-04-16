@@ -74,14 +74,24 @@ class ScanningPerformer(ModuleModel, PerformerModel):
                 scanner = importlib.import_module(
                     f"dusty.scanners.{scanner_type}.{scanner_name}.scanner"
                 ).Scanner(self.context)
-                self.context.scanners[scanner.get_name()] = scanner
                 # Validate config
                 scanner.validate_config(config[scanner_type][scanner_name])
+                # Add to context
+                self.context.scanners[scanner.get_name()] = scanner
 
     def perform(self):
         """ Perform action """
         log.info("Starting")
+        reporting = self.context.performers.get("reporting", None)
+        if reporting:
+            reporting.on_start()
         for scanner_module_name in self.context.scanners:
             scanner = self.context.scanners[scanner_module_name]
-            log.info(f"Running {scanner.get_name()} ({scanner.get_description()})")
+            log.info(f"Running {scanner_module_name} ({scanner.get_description()})")
+            if reporting:
+                reporting.on_scanner_start(scanner_module_name)
             scanner.execute()
+            if reporting:
+                reporting.on_scanner_finish(scanner_module_name)
+        if reporting:
+            reporting.on_finish()

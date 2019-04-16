@@ -82,6 +82,10 @@ class Command(ModuleModel, CommandModel):
         scanning = ScanningPerformer(context)
         processing = ProcessingPerformer(context)
         reporting = ReportingPerformer(context)
+        # Add to context
+        context.performers["scanning"] = scanning
+        context.performers["processing"] = processing
+        context.performers["reporting"] = reporting
         # Init config
         config.load(args.config_variable, args.config_file, args.suite)
         scanning.validate_config(context.config)
