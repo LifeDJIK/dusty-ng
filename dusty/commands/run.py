@@ -99,3 +99,5 @@ class Command(ModuleModel, CommandModel):
         scanning.perform()
         processing.perform()
         reporting.perform()
+        # Done
+        log.info("Done")
