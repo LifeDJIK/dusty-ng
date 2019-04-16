@@ -40,7 +40,7 @@ class Scanner(ModuleModel, ScannerModel):
     @staticmethod
     def get_description():
         """ Module description or help message """
-        raise "OWASP Zed Attack Proxy (ZAP)"
+        return "OWASP Zed Attack Proxy (ZAP)"
 
     @staticmethod
     def fill_config(data_obj):
