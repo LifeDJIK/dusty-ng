@@ -65,6 +65,8 @@ class ScanningPerformer(ModuleModel, PerformerModel):
         config = self.context.config["scanners"]
         for scanner_type in config:
             for scanner_name in config[scanner_type]:
+                if not isinstance(config[scanner_type][scanner_name], dict):
+                    config[scanner_type][scanner_name] = dict()
                 # Merge general config
                 if scanner_type in general_config:
                     merged_config = general_config[scanner_type].copy()

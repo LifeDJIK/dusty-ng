@@ -64,6 +64,8 @@ class ReportingPerformer(ModuleModel, PerformerModel, ReporterModel):
         if "reporters" in self.context.config["general"]:
             general_config = self.context.config["general"]["reporters"]
         config = self.context.config["reporters"]
+        if not isinstance(config, dict):
+            config = dict()
         for reporter_name in config:
             # Merge general config
             merged_config = general_config.copy()

@@ -62,6 +62,8 @@ class ProcessingPerformer(ModuleModel, PerformerModel):
         if "processing" in self.context.config["general"]:
             general_config = self.context.config["general"]["processing"]
         config = self.context.config["processing"]
+        if not isinstance(config, dict):
+            config = dict()
         for processor_name in config:
             # Merge general config
             merged_config = general_config.copy()
