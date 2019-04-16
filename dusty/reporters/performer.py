@@ -68,6 +68,11 @@ class ReportingPerformer(ModuleModel, PerformerModel, ReporterModel):
 
     def perform(self):
         """ Perform action """
+        self.report()
+
+    # Unused method from base class
+    def report(self):
+        """ Report """
         log.info("Starting reporting")
         # Run reporters
         for reporter_module_name in self.context.reporters:
@@ -81,6 +86,13 @@ class ReportingPerformer(ModuleModel, PerformerModel, ReporterModel):
         """ Called when testing starts """
         log.info("Testing started")
         self.testing_start_time = time.time()
+        # Run reporters
+        for reporter_module_name in self.context.reporters:
+            reporter = self.context.reporters[reporter_module_name]
+            try:
+                reporter.on_start()
+            except:
+                log.exception("Reporter %s failed", reporter_module_name)
 
     def on_finish(self):
         """ Called when testing ends """
@@ -89,11 +101,25 @@ class ReportingPerformer(ModuleModel, PerformerModel, ReporterModel):
             "Testing finished (%d seconds)",
             int(self.testing_finish_time - self.testing_start_time)
         )
+        # Run reporters
+        for reporter_module_name in self.context.reporters:
+            reporter = self.context.reporters[reporter_module_name]
+            try:
+                reporter.on_finish()
+            except:
+                log.exception("Reporter %s failed", reporter_module_name)
 
     def on_scanner_start(self, scanner):
         """ Called when scanner starts """
         log.info("Started scanning with %s", scanner)
         self.scanner_start_time[scanner] = time.time()
+        # Run reporters
+        for reporter_module_name in self.context.reporters:
+            reporter = self.context.reporters[reporter_module_name]
+            try:
+                reporter.on_scanner_start(scanner)
+            except:
+                log.exception("Reporter %s failed", reporter_module_name)
 
     def on_scanner_finish(self, scanner):
         """ Called when scanner ends """
@@ -105,6 +131,13 @@ class ReportingPerformer(ModuleModel, PerformerModel, ReporterModel):
             len(self.context.scanners[scanner].get_results()),
             len(self.context.scanners[scanner].get_errors())
         )
+        # Run reporters
+        for reporter_module_name in self.context.reporters:
+            reporter = self.context.reporters[reporter_module_name]
+            try:
+                reporter.on_scanner_finish(scanner)
+            except:
+                log.exception("Reporter %s failed", reporter_module_name)
 
     @staticmethod
     def fill_config(data_obj):
@@ -127,8 +160,3 @@ class ReportingPerformer(ModuleModel, PerformerModel, ReporterModel):
     def get_description():
         """ Module description or help message """
         raise "performs result reporting"
-
-    # Unused method from base class
-    def report(self):
-        """ Report """
-        raise NotImplementedError()
