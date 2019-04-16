@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 # coding=utf-8
-# pylint: disable=I0011,R0903
+# pylint: disable=I0011,R0903,W0702
 
 #   Copyright 2019 getcarrier.io
 #
@@ -67,14 +67,17 @@ class ProcessingPerformer(ModuleModel, PerformerModel):
             merged_config = general_config.copy()
             merged_config.update(config[processor_name])
             config[processor_name] = merged_config
-            # Init processor instance
-            processor = importlib.import_module(
-                f"dusty.processing.{processor_name}.processor"
-            ).Processor(self.context)
-            # Validate config
-            processor.validate_config(config[processor_name])
-            # Add to context
-            self.context.processing[processor.get_name()] = processor
+            try:
+                # Init processor instance
+                processor = importlib.import_module(
+                    f"dusty.processing.{processor_name}.processor"
+                ).Processor(self.context)
+                # Validate config
+                processor.validate_config(config[processor_name])
+                # Add to context
+                self.context.processing[processor.get_name()] = processor
+            except:
+                log.exception("Failed to prepare processor %s", processor_name)
 
     def perform(self):
         """ Perform action """

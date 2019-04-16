@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 # coding=utf-8
-# pylint: disable=I0011,R0903
+# pylint: disable=I0011,R0903,W0702
 
 #   Copyright 2019 getcarrier.io
 #
@@ -70,14 +70,20 @@ class ScanningPerformer(ModuleModel, PerformerModel):
                     merged_config = general_config[scanner_type].copy()
                     merged_config.update(config[scanner_type][scanner_name])
                     config[scanner_type][scanner_name] = merged_config
-                # Init scanner instance
-                scanner = importlib.import_module(
-                    f"dusty.scanners.{scanner_type}.{scanner_name}.scanner"
-                ).Scanner(self.context)
-                # Validate config
-                scanner.validate_config(config[scanner_type][scanner_name])
-                # Add to context
-                self.context.scanners[scanner.get_name()] = scanner
+                try:
+                    # Init scanner instance
+                    scanner = importlib.import_module(
+                        f"dusty.scanners.{scanner_type}.{scanner_name}.scanner"
+                    ).Scanner(self.context)
+                    # Validate config
+                    scanner.validate_config(config[scanner_type][scanner_name])
+                    # Add to context
+                    self.context.scanners[scanner.get_name()] = scanner
+                except:
+                    log.exception(
+                        "Failed to prepare %s scanner %s",
+                        scanner_type, scanner_name
+                    )
 
     def perform(self):
         """ Perform action """

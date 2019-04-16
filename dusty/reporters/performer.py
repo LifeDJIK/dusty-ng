@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 # coding=utf-8
-# pylint: disable=I0011,R0903
+# pylint: disable=I0011,R0903,W0702
 
 #   Copyright 2019 getcarrier.io
 #
@@ -69,14 +69,17 @@ class ReportingPerformer(ModuleModel, PerformerModel, ReporterModel):
             merged_config = general_config.copy()
             merged_config.update(config[reporter_name])
             config[reporter_name] = merged_config
-            # Init reporter instance
-            reporter = importlib.import_module(
-                f"dusty.reporters.{reporter_name}.reporter"
-            ).Reporter(self.context)
-            # Validate config
-            reporter.validate_config(config[reporter_name])
-            # Add to context
-            self.context.reporters[reporter.get_name()] = reporter
+            try:
+                # Init reporter instance
+                reporter = importlib.import_module(
+                    f"dusty.reporters.{reporter_name}.reporter"
+                ).Reporter(self.context)
+                # Validate config
+                reporter.validate_config(config[reporter_name])
+                # Add to context
+                self.context.reporters[reporter.get_name()] = reporter
+            except:
+                log.exception("Failed to prepare reporter %s", reporter_name)
 
     def perform(self):
         """ Perform action """
