@@ -45,7 +45,7 @@ class Processor(DependentModuleModel, ProcessorModel):
     @staticmethod
     def validate_config(config):
         """ Validate config """
-        raise NotImplementedError()
+        log.debug(f"Config: {config}")
 
     @staticmethod
     def depends_on():
