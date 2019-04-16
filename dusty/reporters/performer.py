@@ -20,6 +20,7 @@
     Reporting performer
 """
 
+import time
 import importlib
 
 from dusty.tools import log
@@ -56,6 +57,10 @@ class ReportingPerformer(ModuleModel, PerformerModel, ReporterModel):
     def __init__(self, context):
         """ Initialize instance """
         self.context = context
+        self.testing_start_time = time.time()
+        self.testing_finish_time = time.time()
+        self.scanner_start_time = dict()
+        self.scanner_finish_time = dict()
 
     def prepare(self):
         """ Prepare for action """
@@ -94,18 +99,30 @@ class ReportingPerformer(ModuleModel, PerformerModel, ReporterModel):
     def on_start(self):
         """ Called when testing starts """
         log.info("Testing started")
+        self.testing_start_time = time.time()
 
     def on_finish(self):
         """ Called when testing ends """
-        log.info("Testing finished")
+        self.testing_finish_time = time.time()
+        log.info(
+            "Testing finished (%d seconds)",
+            int(self.testing_finish_time - self.testing_start_time)
+        )
 
     def on_scanner_start(self, scanner):
         """ Called when scanner starts """
         log.info("Started scanning with %s", scanner)
+        self.scanner_start_time[scanner] = time.time()
 
     def on_scanner_finish(self, scanner):
         """ Called when scanner ends """
-        log.info("Finished scanning with %s", scanner)
+        self.scanner_finish_time[scanner] = time.time()
+        log.info(
+            "Finished scanning with %s (%d seconds, %d results)",
+            scanner,
+            int(self.scanner_finish_time[scanner] - self.scanner_start_time[scanner]),
+            len(scanner.get_results())
+        )
 
     def report(self):
         """ Report """
