@@ -63,8 +63,11 @@ class Command(ModuleModel, CommandModel):
         processing.fill_config(data_obj["example"])
         reporting.fill_config(data_obj["example"])
         # Save to file
+        original_represent_key = ruamel.yaml.representer.Representer.represent_key
+        ruamel.yaml.representer.Representer.represent_key = custom_represent_key
         with open(args.output_file, "wb") as output:
             yaml.dump(data, output)
+        ruamel.yaml.representer.Representer.represent_key = original_represent_key
         # Done
         log.info("Done")
 
@@ -87,3 +90,9 @@ class Command(ModuleModel, CommandModel):
     def get_description():
         """ Command help message (description) """
         return "generate sample config"
+
+
+def custom_represent_key(self, data):
+    """ Custom representer for ruamel.yaml """
+    log.debug("Data type: %s", str(type(data)))
+    return ruamel.yaml.representer.SafeRepresenter.represent_key(self, data)
