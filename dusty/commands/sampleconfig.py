@@ -52,7 +52,6 @@ class Command(ModuleModel, CommandModel):
         processing = ProcessingPerformer
         reporting = ReportingPerformer
         # Make config
-        yaml = ruamel.yaml.YAML()
         data = CommentedMap()
         # Fill config
         config.fill_config(data)
@@ -66,7 +65,7 @@ class Command(ModuleModel, CommandModel):
         original_represent_key = ruamel.yaml.representer.Representer.represent_key
         ruamel.yaml.representer.Representer.represent_key = custom_represent_key
         with open(args.output_file, "wb") as output:
-            yaml.dump(data, output)
+            ruamel.yaml.dump(data, output)
         ruamel.yaml.representer.Representer.represent_key = original_represent_key
         # Done
         log.info("Done")
