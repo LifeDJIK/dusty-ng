@@ -87,7 +87,6 @@ class ConfigHelper:
     def fill_config(data_obj):
         """ Make sample config """
         data_obj.insert(
-            len(data_obj), constants.CONFIG_VERSION_KEY, constants.CURRENT_CONFIG_VERSION,
-            comment="Config version"
+            len(data_obj), constants.CONFIG_VERSION_KEY, constants.CURRENT_CONFIG_VERSION
         )
         data_obj.insert(len(data_obj), "suites", CommentedMap(), comment="Test suites")
