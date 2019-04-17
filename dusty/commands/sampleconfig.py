@@ -63,7 +63,6 @@ class Command(ModuleModel, CommandModel):
         reporting.fill_config(data_obj["example"])
         # Save to file
         yaml = ruamel.yaml.YAML()
-        yaml.indent(mapping=4)
         with open(args.output_file, "wb") as output:
             yaml.dump(data, output)
         # Done
