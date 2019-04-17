@@ -112,7 +112,7 @@ class ScanningPerformer(ModuleModel, PerformerModel):
         scanner_obj = data_obj["scanners"]
         scanners_module = importlib.import_module("dusty.scanners")
         for _, name, pkg in pkgutil.iter_modules(scanners_module.__path__):
-            if pkg:
+            if not pkg:
                 continue
             general_scanner_obj.insert(
                 len(general_scanner_obj), name, CommentedMap(),
