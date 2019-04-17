@@ -22,6 +22,8 @@
 
 import time
 import subprocess
+
+from ruamel.yaml.comments import CommentedSeq
 from zapv2 import ZAPv2
 
 from dusty.tools import log
@@ -321,7 +323,7 @@ class Scanner(DependentModuleModel, ScannerModel):
             comment="(optional) User password for authenticated scan"
         )
         data_obj.insert(
-            len(data_obj), "auth_script", [
+            len(data_obj), "auth_script", CommentedSeq([
                 {"command": "open", "target": "http://app:8080/", "value": ""},
                 {"command": "waitForElementPresent", "target": "id=login_login", "value": ""},
                 {"command": "waitForElementPresent", "target": "id=login_password", "value": ""},
@@ -329,7 +331,7 @@ class Scanner(DependentModuleModel, ScannerModel):
                 {"command": "type", "target": "id=login_login", "value": "%Username%"},
                 {"command": "type", "target": "id=login_password", "value": "%Password%"},
                 {"command": "clickAndWait", "target": "id=login_0", "value": ""}
-            ], comment="(optional) Selenium-like script for authenticated scan"
+            ]), comment="(optional) Selenium-like script for authenticated scan"
         )
 
     @staticmethod
