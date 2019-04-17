@@ -126,9 +126,9 @@ class ScanningPerformer(ModuleModel, PerformerModel):
                     continue
                 inner_obj.insert(len(inner_obj), inner_name, CommentedMap())
                 scanner = importlib.import_module(
-                    "dusty.scanners.{}.{}.scanner.Scanner".format(name, inner_name)
+                    "dusty.scanners.{}.{}.scanner".format(name, inner_name)
                 )
-                scanner.fill_config(inner_obj[inner_name])
+                scanner.Scanner.fill_config(inner_obj[inner_name])
 
     @staticmethod
     def validate_config(config):
