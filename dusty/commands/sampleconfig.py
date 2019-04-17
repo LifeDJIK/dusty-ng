@@ -63,7 +63,7 @@ class Command(ModuleModel, CommandModel):
         reporting.fill_config(data_obj["example"])
         # Save to file
         with open(args.output_file, "w") as output:
-            ruamel.yaml.dump(data, output)
+            ruamel.yaml.dump(data, output, Dumper=ruamel.yaml.dumper.RoundTripDumper)
         # Done
         log.info("Done")
 
