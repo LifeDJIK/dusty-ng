@@ -115,7 +115,7 @@ class ScanningPerformer(ModuleModel, PerformerModel):
             if not pkg:
                 continue
             general_scanner_obj.insert(
-                len(general_scanner_obj), name, "",
+                len(general_scanner_obj), name, None,
                 comment=f"Settings common to all {name} scanners"
             )
             scanner_type = importlib.import_module("dusty.scanners.{}".format(name))
