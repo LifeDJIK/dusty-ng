@@ -62,7 +62,7 @@ class Command(ModuleModel, CommandModel):
         processing.fill_config(data_obj["example"])
         reporting.fill_config(data_obj["example"])
         # Save to file
-        with open(args.output_file, "wb") as output:
+        with open(args.output_file, "w") as output:
             ruamel.yaml.dump(data, output)
         # Done
         log.info("Done")
