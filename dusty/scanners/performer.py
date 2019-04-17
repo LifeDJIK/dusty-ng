@@ -119,7 +119,7 @@ class ScanningPerformer(ModuleModel, PerformerModel):
                 comment=f"Settings common to all {name} scanners"
             )
             scanner_type = importlib.import_module("dusty.scanners.{}".format(name))
-            scanner_obj.insert(len(scanner_obj), scanner_type, CommentedMap())
+            scanner_obj.insert(len(scanner_obj), name, CommentedMap())
             inner_obj = scanner_obj[scanner_type]
             for _, inner_name, inner_pkg in pkgutil.iter_modules(scanner_type.__path__):
                 if inner_pkg:
