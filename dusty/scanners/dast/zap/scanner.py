@@ -291,20 +291,54 @@ class Scanner(DependentModuleModel, ScannerModel):
     @staticmethod
     def fill_config(data_obj):
         """ Make sample config """
-        data_obj.insert(len(data_obj), "scan_types", "all", comment="ZAP scan type")
         data_obj.insert(len(data_obj), "target", "http://app:8080/", comment="scan target")
         data_obj.insert(
+            len(data_obj), "scan_types", "all",
+            comment="ZAP scan type, supported any combination of: 'all', 'xss', 'sqli'"
+        )
+        data_obj.insert(
+            len(data_obj), "include", ["http://app:8080/path.*"],
+            comment="(optional) URLs regex to additionally include in scan"
+        )
+        data_obj.insert(
             len(data_obj), "exclude", ["http://app:8080/logout.*"],
-            comment="URLs regex to exclude from scan"
+            comment="(optional) URLs regex to exclude from scan"
+        )
+        data_obj.insert(
+            len(data_obj), "logged_in_indicator", "Logout",
+            comment="(optional) Response regex that is always present for authenticated user"
+        )
+        data_obj.insert(
+            len(data_obj), "logged_out_indicator", "Register a new account",
+            comment="(optional) Response regex that is present for unauthenticated user"
+        )
+        data_obj.insert(
+            len(data_obj), "auth_login", "user",
+            comment="(optional) User login for authenticated scan"
+        )
+        data_obj.insert(
+            len(data_obj), "auth_password", "P@ssw0rd",
+            comment="(optional) User password for authenticated scan"
+        )
+        data_obj.insert(
+            len(data_obj), "auth_script", [
+                "{command: open, target: 'http://app:8080/', value: ''}",
+                "{command: waitForElementPresent, target: id=login_login, value: ''}",
+                "{command: waitForElementPresent, target: id=login_password, value: ''}",
+                "{command: waitForElementPresent, target: id=login_0, value: ''}",
+                "{command: type, target: id=login_login, value: '%Username%'}",
+                "{command: type, target: id=login_password, value: '%Password%'}",
+                "{command: clickAndWait, target: id=login_0, value: ''}"
+            ], comment="(optional) Selenium-like script for authenticated scan"
         )
 
     @staticmethod
     def validate_config(config):
         """ Validate config """
         log.debug(f"Config: {config}")
-        # if "scanners" not in config:
-        #     log.error("No scanners defined in config")
-        #     raise ValueError("No scanners configuration present")
+        if "target" not in config:
+            log.error("No target defined in config")
+            raise ValueError("No target configuration present")
 
     @staticmethod
     def depends_on():
