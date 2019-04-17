@@ -322,13 +322,13 @@ class Scanner(DependentModuleModel, ScannerModel):
         )
         data_obj.insert(
             len(data_obj), "auth_script", [
-                "{command: open, target: 'http://app:8080/', value: ''}",
-                "{command: waitForElementPresent, target: id=login_login, value: ''}",
-                "{command: waitForElementPresent, target: id=login_password, value: ''}",
-                "{command: waitForElementPresent, target: id=login_0, value: ''}",
-                "{command: type, target: id=login_login, value: '%Username%'}",
-                "{command: type, target: id=login_password, value: '%Password%'}",
-                "{command: clickAndWait, target: id=login_0, value: ''}"
+                {command: open, target: "http://app:8080/", value: ""},
+                {command: waitForElementPresent, target: id=login_login, value: ""},
+                {command: waitForElementPresent, target: id=login_password, value: ""},
+                {command: waitForElementPresent, target: id=login_0, value: ""},
+                {command: type, target: id=login_login, value: "%Username%"},
+                {command: type, target: id=login_password, value: "%Password%"},
+                {command: clickAndWait, target: id=login_0, value: ""}
             ], comment="(optional) Selenium-like script for authenticated scan"
         )
 
