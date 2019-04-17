@@ -23,8 +23,8 @@
 import time
 import subprocess
 
-from zapv2 import ZAPv2
 from ruamel.yaml.compat import ordereddict
+from zapv2 import ZAPv2
 
 from dusty.tools import log
 from dusty.data import constants
@@ -347,6 +347,7 @@ class Scanner(DependentModuleModel, ScannerModel):
                 ordereddict([("command", "clickAndWait"), ("target", "id=login_0"), ("value", "")])
             ], comment="(optional) Selenium-like script for authenticated scan"
         )
+        log.debug(str(data_obj))
         log.debug(repr(data_obj))
 
     @staticmethod
