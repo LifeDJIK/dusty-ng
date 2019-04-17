@@ -291,7 +291,7 @@ class Scanner(DependentModuleModel, ScannerModel):
     @staticmethod
     def fill_config(data_obj):
         """ Make sample config """
-        raise NotImplementedError()
+        data_obj.insert(len(data_obj), "scan_types", "all", comment="ZAP scan type")
 
     @staticmethod
     def validate_config(config):

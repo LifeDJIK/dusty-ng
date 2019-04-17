@@ -58,6 +58,7 @@ class Command(ModuleModel, CommandModel):
         config.fill_config(data)
         data_obj = data["suites"]
         data_obj.insert(len(data_obj), "example", CommentedMap(), comment="Example test suite")
+        data_obj["example"].insert(0, "general", CommentedMap(), comment="General config")
         scanning.fill_config(data_obj["example"])
         processing.fill_config(data_obj["example"])
         reporting.fill_config(data_obj["example"])

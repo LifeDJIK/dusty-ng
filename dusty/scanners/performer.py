@@ -21,6 +21,7 @@
 """
 
 import importlib
+import pkgutil
 
 from ruamel.yaml.comments import CommentedMap
 
@@ -102,7 +103,30 @@ class ScanningPerformer(ModuleModel, PerformerModel):
     @staticmethod
     def fill_config(data_obj):
         """ Make sample config """
+        general_obj = data_obj["general"]
+        general_obj.insert(
+            len(general_obj), "scanners", CommentedMap(), comment="General scanners config"
+        )
+        general_scanner_obj = general_obj["scanners"]
         data_obj.insert(len(data_obj), "scanners", CommentedMap(), comment="Scanners config")
+        scanner_obj = data_obj["scanners"]
+        scanners_module = importlib.import_module("dusty.scanners")
+        for _, name, pkg in pkgutil.iter_modules(scanners_module.__path__):
+            if pkg:
+                continue
+            general_scanner_obj.insert(
+                len(general_scanner_obj), name, CommentedMap(),
+                comment=f"Settings common to all {name} scanners"
+            )
+            scanner_type = importlib.import_module("dusty.scanners.{}".format(name))
+            scanner_obj.insert(len(scanner_obj), scanner_type, CommentedMap())
+            inner_obj = scanner_obj[scanner_type]
+            for _, inner_name, inner_pkg in pkgutil.iter_modules(scanner_type.__path__):
+                if inner_pkg:
+                    continue
+                inner_obj.insert(len(inner_obj), inner_name, CommentedMap())
+                scanner = importlib.import_module("dusty.scanners.{}.{}".format(name, inner_name))
+                scanner.fill_config(inner_obj[inner_name])
 
     @staticmethod
     def validate_config(config):
