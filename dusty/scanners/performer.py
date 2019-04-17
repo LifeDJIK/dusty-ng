@@ -121,10 +121,10 @@ class ScanningPerformer(ModuleModel, PerformerModel):
             scanner_type = importlib.import_module("dusty.scanners.{}".format(name))
             scanner_obj.insert(len(scanner_obj), name, CommentedMap())
             inner_obj = scanner_obj[name]
-            logging.debug(scanner_type.__path__)
+            log.debug(scanner_type.__path__)
             for _, inner_name, inner_pkg in pkgutil.iter_modules(scanner_type.__path__):
-                logging.debug(inner_name)
-                logging.debug(inner_pkg)
+                log.debug(inner_name)
+                log.debug(inner_pkg)
                 if not inner_pkg:
                     continue
                 inner_obj.insert(len(inner_obj), inner_name, CommentedMap())
