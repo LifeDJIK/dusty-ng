@@ -324,26 +324,23 @@ class Scanner(DependentModuleModel, ScannerModel):
             comment="(optional) User password for authenticated scan"
         )
         data_obj.insert(
-            len(data_obj), "auth_script", CommentedSeq([
-                CommentedMap({"command": "open", "target": "http://app:8080/", "value": ""}),
-                CommentedMap({
-                    "command": "waitForElementPresent", "target": "id=login_login", "value": ""
-                }),
-                CommentedMap({
-                    "command": "waitForElementPresent", "target": "id=login_password", "value": ""
-                }),
-                CommentedMap({
-                    "command": "waitForElementPresent", "target": "id=login_0", "value": ""
-                }),
-                CommentedMap({
-                    "command": "type", "target": "id=login_login", "value": "%Username%"
-                }),
-                CommentedMap({
-                    "command": "type", "target": "id=login_password", "value": "%Password%"
-                }),
-                CommentedMap({"command": "clickAndWait", "target": "id=login_0", "value": ""})
-            ]), comment="(optional) Selenium-like script for authenticated scan"
+            len(data_obj), "auth_script", CommentedSeq(),
+            comment="(optional) Selenium-like script for authenticated scan"
         )
+        script_obj = data_obj["auth_script"]
+        for command in [
+                {"command": "open", "target": "http://app:8080/", "value": ""},
+                {"command": "waitForElementPresent", "target": "id=login_login", "value": ""},
+                {"command": "waitForElementPresent", "target": "id=login_password", "value": ""},
+                {"command": "waitForElementPresent", "target": "id=login_0", "value": ""},
+                {"command": "type", "target": "id=login_login", "value": "%Username%"},
+                {"command": "type", "target": "id=login_password", "value": "%Password%"},
+                {"command": "clickAndWait", "target": "id=login_0", "value": ""}
+        ]:
+            command_obj = CommentedMap()
+            for key in ["command", "target", "value"]:
+                command_obj.insert(len(command_obj), key, command[key])
+            script_obj.append(command_obj)
 
     @staticmethod
     def validate_config(config):
