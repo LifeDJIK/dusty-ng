@@ -80,3 +80,12 @@ class ConfigHelper:
             log.error("Suite is not defined: %s", self.context.suite)
             return False
         return True
+
+    @staticmethod
+    def fill_config(data_obj):
+        """ Make sample config """
+        data_obj.insert(
+            len(data_obj), constants.CONFIG_VERSION_KEY, constants.CURRENT_CONFIG_VERSION,
+            comment="Config version"
+        )
+        data_obj.insert(len(data_obj), "suites", dict(), comment="Test suites")
