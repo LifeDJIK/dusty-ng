@@ -122,7 +122,7 @@ class ScanningPerformer(ModuleModel, PerformerModel):
             scanner_obj.insert(len(scanner_obj), name, CommentedMap())
             inner_obj = scanner_obj[name]
             log.debug(scanner_type.__path__)
-            for _, inner_name, inner_pkg in pkgutil.iter_modules(scanner_type.__path__):
+            for inner_, inner_name, inner_pkg in pkgutil.iter_modules(scanner_type.__path__):
                 log.debug(inner_name)
                 log.debug(inner_pkg)
                 if not inner_pkg:
