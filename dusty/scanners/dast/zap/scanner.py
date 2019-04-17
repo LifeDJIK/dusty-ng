@@ -328,7 +328,6 @@ class Scanner(DependentModuleModel, ScannerModel):
             comment="(optional) Selenium-like script for authenticated scan"
         )
         script_obj = data_obj["auth_script"]
-        script_obj.fa.set_flow_style()
         for command in [
                 {"command": "open", "target": "http://app:8080/", "value": ""},
                 {"command": "waitForElementPresent", "target": "id=login_login", "value": ""},
@@ -339,6 +338,7 @@ class Scanner(DependentModuleModel, ScannerModel):
                 {"command": "clickAndWait", "target": "id=login_0", "value": ""}
         ]:
             command_obj = CommentedMap()
+            command_obj.fa.set_flow_style()
             for key in ["command", "target", "value"]:
                 command_obj.insert(len(command_obj), key, command[key])
             script_obj.append(command_obj)
