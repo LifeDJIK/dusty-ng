@@ -31,3 +31,7 @@ class PerformerModel:
     def perform(self):
         """ Perform action """
         raise NotImplementedError()
+
+    def get_module_meta(self, module, name, default=None):
+        """ Get submodule meta value """
+        raise NotImplementedError()

@@ -40,11 +40,13 @@ class Scanner(DependentModuleModel, ScannerModel):
             self.context.config["scanners"][__name__.split(".")[-3]][__name__.split(".")[-2]]
         self.results = list()
         self.errors = list()
+        self.meta = dict()
         self._zap_daemon = None
         self._zap_api = None
 
     def execute(self):
         """ Run the scanner """
+        log.debug(f"Config: {self.config}")
         try:
             self._start_zap()
             if not self._wait_for_zap_start():
@@ -65,6 +67,12 @@ class Scanner(DependentModuleModel, ScannerModel):
     def get_errors(self):
         """ Get errors """
         return self.errors
+
+    def get_meta(self, name, default=None):
+        """ Get meta value """
+        if name in self.meta:
+            return self.meta[name]
+        return default
 
     def _start_zap(self):
         """ Start ZAP daemon, create API client """

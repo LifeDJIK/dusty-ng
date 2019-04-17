@@ -30,15 +30,25 @@ class Reporter(DependentModuleModel, ReporterModel):
     def __init__(self, context):
         """ Initialize reporter instance """
         self.context = context
+        self.config = \
+            self.context.config["reporters"][__name__.split(".")[-2]]
         self.errors = list()
+        self.meta = dict()
 
     def report(self):
         """ Report """
+        log.debug(f"Config: {self.config}")
         log.info("Reporting")
 
     def get_errors(self):
         """ Get errors """
         return self.errors
+
+    def get_meta(self, name, default=None):
+        """ Get meta value """
+        if name in self.meta:
+            return self.meta[name]
+        return default
 
     def on_start(self):
         """ Called when testing starts """

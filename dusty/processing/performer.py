@@ -76,6 +76,18 @@ class ProcessingPerformer(ModuleModel, PerformerModel):
             except:
                 log.exception("Processor %s failed", processor_module_name)
 
+    def get_module_meta(self, module, name, default=None):
+        """ Get submodule meta value """
+        try:
+            module_name = importlib.import_module(
+                f"dusty.processing.{module}.processor"
+            ).Processor.get_name()
+            if module_name in self.context.processing:
+                return self.context.processing[module_name].get_meta(name, default)
+            return default
+        except:
+            return default
+
     @staticmethod
     def fill_config(data_obj):
         """ Make sample config """

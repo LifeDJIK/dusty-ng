@@ -70,6 +70,18 @@ class ReportingPerformer(ModuleModel, PerformerModel, ReporterModel):
         """ Perform action """
         self.report()
 
+    def get_module_meta(self, module, name, default=None):
+        """ Get submodule meta value """
+        try:
+            module_name = importlib.import_module(
+                f"dusty.reporters.{module}.reporter"
+            ).Reporter.get_name()
+            if module_name in self.context.reporters:
+                return self.context.reporters[module_name].get_meta(name, default)
+            return default
+        except:
+            return default
+
     # Unused method from base class
     def report(self):
         """ Report """

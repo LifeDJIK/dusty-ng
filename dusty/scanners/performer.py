@@ -85,6 +85,18 @@ class ScanningPerformer(ModuleModel, PerformerModel):
         if reporting:
             reporting.on_finish()
 
+    def get_module_meta(self, module, name, default=None):
+        """ Get submodule meta value """
+        try:
+            module_name = importlib.import_module(
+                f"dusty.scanners.{module}.scanner"
+            ).Scanner.get_name()
+            if module_name in self.context.scanners:
+                return self.context.scanners[module_name].get_meta(name, default)
+            return default
+        except:
+            return default
+
     @staticmethod
     def fill_config(data_obj):
         """ Make sample config """

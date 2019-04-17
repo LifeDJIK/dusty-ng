@@ -19,8 +19,10 @@
     Reporter model
 """
 
+from dusty.models.meta import MetaModel
 
-class ReporterModel:
+
+class ReporterModel(MetaModel):
     """ Reporter base class """
 
     def on_start(self):

@@ -20,8 +20,10 @@
     Scanner model
 """
 
+from dusty.models.meta import MetaModel
 
-class ScannerModel:
+
+class ScannerModel(MetaModel):
     """ Scanner base class """
 
     def execute(self):

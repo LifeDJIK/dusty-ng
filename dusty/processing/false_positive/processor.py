@@ -30,15 +30,25 @@ class Processor(DependentModuleModel, ProcessorModel):
     def __init__(self, context):
         """ Initialize processor instance """
         self.context = context
+        self.config = \
+            self.context.config["processing"][__name__.split(".")[-2]]
         self.errors = list()
+        self.meta = dict()
 
     def execute(self):
         """ Run the processor """
+        log.debug(f"Config: {self.config}")
         log.info("Processing false-positives")
 
     def get_errors(self):
         """ Get errors """
         return self.errors
+
+    def get_meta(self, name, default=None):
+        """ Get meta value """
+        if name in self.meta:
+            return self.meta[name]
+        return default
 
     @staticmethod
     def fill_config(data_obj):

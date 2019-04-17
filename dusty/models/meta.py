@@ -17,19 +17,13 @@
 #   limitations under the License.
 
 """
-    Processor model
+    Meta model
 """
 
-from dusty.models.meta import MetaModel
 
+class MetaModel:
+    """ Meta base class """
 
-class ProcessorModel(MetaModel):
-    """ Processor base class """
-
-    def execute(self):
-        """ Run the processor """
-        raise NotImplementedError()
-
-    def get_errors(self):
-        """ Get errors """
+    def get_meta(self, name, default=None):
+        """ Get meta value """
         raise NotImplementedError()
