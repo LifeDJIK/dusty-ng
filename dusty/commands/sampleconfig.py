@@ -58,7 +58,7 @@ class Command(ModuleModel, CommandModel):
         # processing.validate_config(context.config)
         # reporting.validate_config(context.config)
         # Save to file
-        with open(args.output_file, "rb") as output:
+        with open(args.output_file, "wb") as output:
             yaml.dump(data, output)
         # Done
         log.info("Done")
