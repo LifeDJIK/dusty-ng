@@ -292,6 +292,11 @@ class Scanner(DependentModuleModel, ScannerModel):
     def fill_config(data_obj):
         """ Make sample config """
         data_obj.insert(len(data_obj), "scan_types", "all", comment="ZAP scan type")
+        data_obj.insert(len(data_obj), "target", "http://app:8080/", comment="scan target")
+        data_obj.insert(
+            len(data_obj), "exclude", ["http://app:8080/logout.*"],
+            comment="URLs regex to exclude from scan"
+        )
 
     @staticmethod
     def validate_config(config):
