@@ -328,6 +328,7 @@ class Scanner(DependentModuleModel, ScannerModel):
             comment="(optional) Selenium-like script for authenticated scan"
         )
         script_obj = data_obj["auth_script"]
+        script_obj.fa.set_flow_style(True)
         for command in [
                 {"command": "open", "target": "http://app:8080/", "value": ""},
                 {"command": "waitForElementPresent", "target": "id=login_login", "value": ""},
