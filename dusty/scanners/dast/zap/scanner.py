@@ -294,11 +294,11 @@ class Scanner(DependentModuleModel, ScannerModel):
     @staticmethod
     def fill_config(data_obj):
         """ Make sample config """
-        data_obj.insert(len(data_obj), "target", "http://app:8080/", comment="scan target")
         data_obj.insert(
             len(data_obj), "scan_types", "all",
             comment="ZAP scan type, supported any combination of: 'all', 'xss', 'sqli'"
         )
+        data_obj.insert(len(data_obj), "target", "http://app:8080/", comment="scan target")
         data_obj.insert(
             len(data_obj), "include", ["http://app:8080/path.*"],
             comment="(optional) URLs regex to additionally include in scan"
