@@ -52,11 +52,11 @@ class ProcessingPerformer(ModuleModel, PerformerModel):
                 # Init processor instance
                 processor = importlib.import_module(
                     f"dusty.processing.{processor_name}.processor"
-                ).Processor(self.context)
+                ).Processor
                 # Validate config
                 processor.validate_config(config[processor_name])
                 # Add to context
-                self.context.processing[processor.get_name()] = processor
+                self.context.processing[processor.get_name()] = processor(self.context)
             except:
                 log.exception("Failed to prepare processor %s", processor_name)
 

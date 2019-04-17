@@ -54,11 +54,11 @@ class ScanningPerformer(ModuleModel, PerformerModel):
                     # Init scanner instance
                     scanner = importlib.import_module(
                         f"dusty.scanners.{scanner_type}.{scanner_name}.scanner"
-                    ).Scanner(self.context)
+                    ).Scanner
                     # Validate config
                     scanner.validate_config(config[scanner_type][scanner_name])
                     # Add to context
-                    self.context.scanners[scanner.get_name()] = scanner
+                    self.context.scanners[scanner.get_name()] = scanner(self.context)
                 except:
                     log.exception(
                         "Failed to prepare %s scanner %s",

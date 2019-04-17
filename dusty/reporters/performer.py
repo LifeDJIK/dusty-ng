@@ -58,11 +58,11 @@ class ReportingPerformer(ModuleModel, PerformerModel, ReporterModel):
                 # Init reporter instance
                 reporter = importlib.import_module(
                     f"dusty.reporters.{reporter_name}.reporter"
-                ).Reporter(self.context)
+                ).Reporter
                 # Validate config
                 reporter.validate_config(config[reporter_name])
                 # Add to context
-                self.context.reporters[reporter.get_name()] = reporter
+                self.context.reporters[reporter.get_name()] = reporter(self.context)
             except:
                 log.exception("Failed to prepare reporter %s", reporter_name)
 
