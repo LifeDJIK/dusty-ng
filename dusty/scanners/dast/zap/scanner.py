@@ -22,8 +22,6 @@
 
 import time
 import subprocess
-
-from ruamel.yaml.compat import ordereddict
 from zapv2 import ZAPv2
 
 from dusty.tools import log
@@ -324,31 +322,15 @@ class Scanner(DependentModuleModel, ScannerModel):
         )
         data_obj.insert(
             len(data_obj), "auth_script", [
-                ordereddict([("command", "open"), ("target", "http://app:8080/"), ("value", "")]),
-                ordereddict([
-                    ("command", "waitForElementPresent"),
-                    ("target", "id=login_login"),
-                    ("value", "")
-                ]),
-                ordereddict([
-                    ("command", "waitForElementPresent"),
-                    ("target", "id=login_password"),
-                    ("value", "")
-                ]),
-                ordereddict([
-                    ("command", "waitForElementPresent"), ("target", "id=login_0"), ("value", "")
-                ]),
-                ordereddict([
-                    ("command", "type"), ("target", "id=login_login"), ("value", "%Username%")
-                ]),
-                ordereddict([
-                    ("command", "type"), ("target", "id=login_password"), ("value", "%Password%")
-                ]),
-                ordereddict([("command", "clickAndWait"), ("target", "id=login_0"), ("value", "")])
+                {"command": "open", "target": "http://app:8080/", "value": ""},
+                {"command": "waitForElementPresent", "target": "id=login_login", "value": ""},
+                {"command": "waitForElementPresent", "target": "id=login_password", "value": ""},
+                {"command": "waitForElementPresent", "target": "id=login_0", "value": ""},
+                {"command": "type", "target": "id=login_login", "value": "%Username%"},
+                {"command": "type", "target": "id=login_password", "value": "%Password%"},
+                {"command": "clickAndWait", "target": "id=login_0", "value": ""}
             ], comment="(optional) Selenium-like script for authenticated scan"
         )
-        log.debug(str(data_obj))
-        log.debug(repr(data_obj))
 
     @staticmethod
     def validate_config(config):
