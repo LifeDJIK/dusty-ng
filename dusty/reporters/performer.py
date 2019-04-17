@@ -167,9 +167,12 @@ class ReportingPerformer(ModuleModel, PerformerModel, ReporterModel):
         for _, name, pkg in pkgutil.iter_modules(reporters_module.__path__):
             if not pkg:
                 continue
-            reporters_obj.insert(len(reporters_obj), name, CommentedMap())
             reporter = importlib.import_module(
                 "dusty.reporters.{}.reporter".format(name)
+            )
+            reporters_obj.insert(
+                len(reporters_obj), name, CommentedMap(),
+                comment=reporter.Reporter.get_description()
             )
             reporter.Reporter.fill_config(reporters_obj[name])
 

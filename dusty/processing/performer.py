@@ -105,9 +105,12 @@ class ProcessingPerformer(ModuleModel, PerformerModel):
         for _, name, pkg in pkgutil.iter_modules(processing_module.__path__):
             if not pkg:
                 continue
-            processing_obj.insert(len(processing_obj), name, CommentedMap())
             processor = importlib.import_module(
                 "dusty.processing.{}.processor".format(name)
+            )
+            processing_obj.insert(
+                len(processing_obj), name, CommentedMap(),
+                comment=processor.Processor.get_description()
             )
             processor.Processor.fill_config(processing_obj[name])
 
