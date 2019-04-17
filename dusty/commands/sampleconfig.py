@@ -62,7 +62,7 @@ class Command(ModuleModel, CommandModel):
         processing.fill_config(data_obj["example"])
         reporting.fill_config(data_obj["example"])
         # Save to file
-        yaml = ruamel.yaml.YAML()
+        yaml = ruamel.yaml.YAML(typ="safe")
         with open(args.output_file, "wb") as output:
             yaml.dump(data, output)
         # Done
