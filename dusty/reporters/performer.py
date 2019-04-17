@@ -23,6 +23,8 @@
 import time
 import importlib
 
+from ruamel.yaml.comments import CommentedMap
+
 from dusty.tools import log
 from dusty.models.module import ModuleModel
 from dusty.models.performer import PerformerModel
@@ -82,7 +84,6 @@ class ReportingPerformer(ModuleModel, PerformerModel, ReporterModel):
         except:
             return default
 
-    # Unused method from base class
     def report(self):
         """ Report """
         log.info("Starting reporting")
@@ -154,7 +155,7 @@ class ReportingPerformer(ModuleModel, PerformerModel, ReporterModel):
     @staticmethod
     def fill_config(data_obj):
         """ Make sample config """
-        raise NotImplementedError()
+        data_obj.insert(len(data_obj), "reporters", CommentedMap(), comment="Reporters config")
 
     @staticmethod
     def validate_config(config):
@@ -172,3 +173,11 @@ class ReportingPerformer(ModuleModel, PerformerModel, ReporterModel):
     def get_description():
         """ Module description or help message """
         raise "performs result reporting"
+
+    def get_errors(self):
+        """ Get errors """
+        raise NotImplementedError()
+
+    def get_meta(self, name, default=None):
+        """ Get meta value """
+        raise NotImplementedError()

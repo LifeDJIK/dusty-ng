@@ -22,6 +22,8 @@
 
 import importlib
 
+from ruamel.yaml.comments import CommentedMap
+
 from dusty.tools import log
 from dusty.models.module import ModuleModel
 from dusty.models.performer import PerformerModel
@@ -91,7 +93,7 @@ class ProcessingPerformer(ModuleModel, PerformerModel):
     @staticmethod
     def fill_config(data_obj):
         """ Make sample config """
-        raise NotImplementedError()
+        data_obj.insert(len(data_obj), "processing", CommentedMap(), comment="Processing config")
 
     @staticmethod
     def validate_config(config):

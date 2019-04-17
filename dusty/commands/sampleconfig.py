@@ -21,6 +21,8 @@
 
 import ruamel.yaml
 
+from ruamel.yaml.comments import CommentedMap
+
 from dusty.tools import log
 from dusty.models.module import ModuleModel
 from dusty.models.command import CommandModel
@@ -51,12 +53,14 @@ class Command(ModuleModel, CommandModel):
         reporting = ReportingPerformer
         # Make config
         yaml = ruamel.yaml.YAML()
-        data = yaml.load("{}")
+        data = CommentedMap()
         # Fill config
         config.fill_config(data)
-        # scanning.validate_config(context.config)
-        # processing.validate_config(context.config)
-        # reporting.validate_config(context.config)
+        data_obj = data["suites"]
+        data_obj.insert(len(data_obj), "example", CommentedMap(), comment="Example test suite")
+        scanning.fill_config(data_obj["example"])
+        processing.fill_config(data_obj["example"])
+        reporting.fill_config(data_obj["example"])
         # Save to file
         with open(args.output_file, "wb") as output:
             yaml.dump(data, output)

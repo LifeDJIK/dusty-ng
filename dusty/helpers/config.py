@@ -24,6 +24,8 @@ import os
 import re
 import yaml
 
+from ruamel.yaml.comments import CommentedMap
+
 from dusty.tools import log
 from dusty.data import constants
 
@@ -88,4 +90,4 @@ class ConfigHelper:
             len(data_obj), constants.CONFIG_VERSION_KEY, constants.CURRENT_CONFIG_VERSION,
             comment="Config version"
         )
-        data_obj.insert(len(data_obj), "suites", dict(), comment="Test suites")
+        data_obj.insert(len(data_obj), "suites", CommentedMap(), comment="Test suites")
