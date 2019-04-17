@@ -347,6 +347,7 @@ class Scanner(DependentModuleModel, ScannerModel):
                 ordereddict([("command", "clickAndWait"), ("target", "id=login_0"), ("value", "")])
             ], comment="(optional) Selenium-like script for authenticated scan"
         )
+        log.debug(repr(data_obj))
 
     @staticmethod
     def validate_config(config):
