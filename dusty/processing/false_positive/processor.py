@@ -53,7 +53,10 @@ class Processor(DependentModuleModel, ProcessorModel):
     @staticmethod
     def fill_config(data_obj):
         """ Make sample config """
-        raise NotImplementedError()
+        data_obj.insert(
+            len(data_obj), "file", "/path/to/false_positive.config",
+            comment="File with issue hashes"
+        )
 
     @staticmethod
     def validate_config(config):

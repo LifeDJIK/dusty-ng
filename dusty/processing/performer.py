@@ -21,6 +21,7 @@
 """
 
 import importlib
+import pkgutil
 
 from ruamel.yaml.comments import CommentedMap
 
@@ -93,7 +94,22 @@ class ProcessingPerformer(ModuleModel, PerformerModel):
     @staticmethod
     def fill_config(data_obj):
         """ Make sample config """
+        general_obj = data_obj["general"]
+        general_obj.insert(
+            len(general_obj), "processing", CommentedMap(),
+            comment="Settings common to all processors"
+        )
         data_obj.insert(len(data_obj), "processing", CommentedMap(), comment="Processing config")
+        processing_obj = data_obj["processing"]
+        processing_module = importlib.import_module("dusty.processing")
+        for _, name, pkg in pkgutil.iter_modules(processing_module.__path__):
+            if not pkg:
+                continue
+            processing_obj.insert(len(processing_obj), name, CommentedMap())
+            processor = importlib.import_module(
+                "dusty.processing.{}.processor".format(name)
+            )
+            processor.Processor.fill_config(processing_obj[name])
 
     @staticmethod
     def validate_config(config):

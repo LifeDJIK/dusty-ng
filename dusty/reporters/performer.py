@@ -22,6 +22,7 @@
 
 import time
 import importlib
+import pkgutil
 
 from ruamel.yaml.comments import CommentedMap
 
@@ -155,7 +156,22 @@ class ReportingPerformer(ModuleModel, PerformerModel, ReporterModel):
     @staticmethod
     def fill_config(data_obj):
         """ Make sample config """
+        general_obj = data_obj["general"]
+        general_obj.insert(
+            len(general_obj), "reporters", CommentedMap(),
+            comment="Settings common to all reporters"
+        )
         data_obj.insert(len(data_obj), "reporters", CommentedMap(), comment="Reporters config")
+        reporters_obj = data_obj["reporters"]
+        reporters_module = importlib.import_module("dusty.reporters")
+        for _, name, pkg in pkgutil.iter_modules(reporters_module.__path__):
+            if not pkg:
+                continue
+            reporters_obj.insert(len(reporters_obj), name, CommentedMap())
+            reporter = importlib.import_module(
+                "dusty.reporters.{}.reporter".format(name)
+            )
+            reporter.Reporter.fill_config(reporters_obj[name])
 
     @staticmethod
     def validate_config(config):
