@@ -24,6 +24,7 @@ import time
 import subprocess
 
 from ruamel.yaml.comments import CommentedSeq
+from ruamel.yaml.comments import CommentedMap
 from zapv2 import ZAPv2
 
 from dusty.tools import log
@@ -324,13 +325,23 @@ class Scanner(DependentModuleModel, ScannerModel):
         )
         data_obj.insert(
             len(data_obj), "auth_script", CommentedSeq([
-                {"command": "open", "target": "http://app:8080/", "value": ""},
-                {"command": "waitForElementPresent", "target": "id=login_login", "value": ""},
-                {"command": "waitForElementPresent", "target": "id=login_password", "value": ""},
-                {"command": "waitForElementPresent", "target": "id=login_0", "value": ""},
-                {"command": "type", "target": "id=login_login", "value": "%Username%"},
-                {"command": "type", "target": "id=login_password", "value": "%Password%"},
-                {"command": "clickAndWait", "target": "id=login_0", "value": ""}
+                CommentedMap({"command": "open", "target": "http://app:8080/", "value": ""}),
+                CommentedMap({
+                    "command": "waitForElementPresent", "target": "id=login_login", "value": ""
+                }),
+                CommentedMap({
+                    "command": "waitForElementPresent", "target": "id=login_password", "value": ""
+                }),
+                CommentedMap({
+                    "command": "waitForElementPresent", "target": "id=login_0", "value": ""
+                }),
+                CommentedMap({
+                    "command": "type", "target": "id=login_login", "value": "%Username%"
+                }),
+                CommentedMap({
+                    "command": "type", "target": "id=login_password", "value": "%Password%"
+                }),
+                CommentedMap({"command": "clickAndWait", "target": "id=login_0", "value": ""})
             ]), comment="(optional) Selenium-like script for authenticated scan"
         )
 
