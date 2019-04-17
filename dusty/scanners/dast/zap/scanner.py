@@ -23,8 +23,8 @@
 import time
 import subprocess
 
-from collections import OrderedDict
 from zapv2 import ZAPv2
+from ruamel.yaml.compat import ordereddict
 
 from dusty.tools import log
 from dusty.data import constants
@@ -324,27 +324,27 @@ class Scanner(DependentModuleModel, ScannerModel):
         )
         data_obj.insert(
             len(data_obj), "auth_script", [
-                OrderedDict([("command", "open"), ("target", "http://app:8080/"), ("value", "")]),
-                OrderedDict([
+                ordereddict([("command", "open"), ("target", "http://app:8080/"), ("value", "")]),
+                ordereddict([
                     ("command", "waitForElementPresent"),
                     ("target", "id=login_login"),
                     ("value", "")
                 ]),
-                OrderedDict([
+                ordereddict([
                     ("command", "waitForElementPresent"),
                     ("target", "id=login_password"),
                     ("value", "")
                 ]),
-                OrderedDict([
+                ordereddict([
                     ("command", "waitForElementPresent"), ("target", "id=login_0"), ("value", "")
                 ]),
-                OrderedDict([
+                ordereddict([
                     ("command", "type"), ("target", "id=login_login"), ("value", "%Username%")
                 ]),
-                OrderedDict([
+                ordereddict([
                     ("command", "type"), ("target", "id=login_password"), ("value", "%Password%")
                 ]),
-                OrderedDict([("command", "clickAndWait"), ("target", "id=login_0"), ("value", "")])
+                ordereddict([("command", "clickAndWait"), ("target", "id=login_0"), ("value", "")])
             ], comment="(optional) Selenium-like script for authenticated scan"
         )
 
