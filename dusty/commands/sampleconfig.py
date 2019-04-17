@@ -65,7 +65,7 @@ class Command(ModuleModel, CommandModel):
         with open(args.output_file, "w") as output:
             ruamel.yaml.dump(
                 data, output,
-                default_flow_style=True,
+                default_flow_style=False,
                 Dumper=ruamel.yaml.dumper.RoundTripDumper
             )
         # Done
